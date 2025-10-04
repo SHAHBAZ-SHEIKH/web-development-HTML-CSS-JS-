@@ -252,6 +252,92 @@ console.log(applyOperation(5, 10, add));      // 15
 console.log(applyOperation(5, 10, multiply)); // 50
 ```
 
+```javascript
+
+
+
+const getUser = (callBackFn) => {
+    setTimeout(() => {
+        const userInfo = {
+            user: "Shahabz Ahmed"
+        }
+        callBackFn(userInfo)
+    }, 3000)
+}
+
+
+
+const getUserSync = () => {
+    const userInfo = {
+        user: "Shahabz Ahmed"
+    }
+    return userInfo
+
+}
+
+
+const main = () => {
+    getUser(function (userInfoObj) {
+        console.log("User Info async:", userInfoObj)
+    })
+
+    const userInfo = getUserSync()
+    console.log("User Info Sync:", userInfo)
+}
+
+
+main()
+
+const getuser = (getUserSuccess)=>{
+    setTimeout(()=>{
+        const user = {
+            userName:"Shahabz Ahmed"
+        }
+        getUserSuccess(user)
+    },1500)
+
+}
+
+const getEvent = (getEventSuccess)=>{
+    setTimeout(()=>{
+        const event = {
+            eventName:"Birthday Party"
+        }
+        getEventSuccess(event)
+    },500)
+
+}
+
+
+getuser(function(user){
+    console.log("User Info:",user)
+})
+
+getEvent(function(event){
+    console.log("Event Info:",event)
+})
+
+
+
+const getUser = (callBackFn)=>{
+    fetch("https://randomuser.me/api/")
+    .then(res => res.json())
+    .then(res =>{
+        callBackFn(res)
+    })
+
+}
+
+const main = ()=>{
+    const data = getUser(function(){
+        console.log("User Info:")
+    })
+    console.log("Data:",data)
+}
+main()
+
+```
+
 ---
 
 ## ✅ Summary
