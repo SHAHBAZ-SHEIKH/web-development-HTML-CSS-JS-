@@ -99,6 +99,4 @@ So, whether you’re starting your journey in web development, app building, or 
 
 ---
 
-## 🧭 Suggested Title for Your Lecture
 
-**From Code to AI: Navigating Your Career in the Age of Automation**
