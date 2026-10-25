@@ -1,781 +1,1050 @@
-<div align="center">
+# CSS Position Property Guide
 
-# 🎓 Certificate in Information Technology (CIT)
-## Lecture 1 — Introduction to Information Technology & the Digital World
+**Topics covered:** `static`, `relative`, `absolute`, `fixed`, `sticky`, Offset Properties (`top`, `right`, `bottom`, `left`), `z-index`
 
-![Course Badge](https://img.shields.io/badge/Course-CIT%20%7C%20Lecture%201-6C63FF?style=for-the-badge&logo=graduation-cap&logoColor=white)
-![Level](https://img.shields.io/badge/Level-Beginner%20Friendly-28C76F?style=for-the-badge)
-![Duration](https://img.shields.io/badge/Duration-2%20Hours-FF6B6B?style=for-the-badge)
-![Language](https://img.shields.io/badge/Language-English%20%2F%20Simple-FFA500?style=for-the-badge)
-
-> *"Technology is best when it brings people together."* — Matt Mullenweg
+Yeh guide students ke liye hai. Har position value ko definition, syntax, real-life analogy aur **3 practical examples** ke sath explain kiya gaya hai.
 
 ---
 
+## Table of Contents
+
+1. [Position Kya Hai?](#1-position-kya-hai)
+2. [Offset Properties](#2-offset-properties-top-right-bottom-left)
+3. [position: static](#3-position-static)
+4. [position: relative](#4-position-relative)
+5. [position: absolute](#5-position-absolute)
+6. [position: fixed](#6-position-fixed)
+7. [position: sticky](#7-position-sticky)
+8. [z-index](#8-z-index)
+9. [Quick Comparison Table](#9-quick-comparison-table)
+10. [Common Mistakes](#10-common-mistakes)
+11. [Practice Tasks](#11-practice-tasks)
+12. [Mini Project Ideas](#12-mini-project-ideas)
+13. [Complete Practice Code](#13-complete-practice-code)
+
+---
+
+## 1. Position Kya Hai?
+
+### Definition
+`position` property decide karti hai ke element page par **kahan aur kis reference ke mutabiq** place hoga. Iske sath hum `top`, `right`, `bottom`, `left` use karke element ko **move** karte hain.
+
+### Normal Flow (Default Behavior)
+Browser elements ko **upar se neeche, ek ke baad ek** rakhta hai. Isay **Normal Flow** kehte hain. `position` is flow ko **tod sakti hai** ya us mein **thori tabdeeli** kar sakti hai.
+
+### Real-Life Analogy
+Class mein students apni **assigned seats** par baithi hain (yeh Normal Flow hai). Ab:
+
+- Student **apni seat par hi baithi hai** = `static`
+- Student apni seat se **thora sa khisak gayi**, lekin us ki purani seat khali rahi = `relative`
+- Student ne seat chhor kar **board ke bilkul saamne** khari ho gayi, ab us ki jagah par koi aur baith sakta hai = `absolute`
+- Student ko **school gate par permanent guard** bana diya, chahe class kahin bhi chali jaye woh wahin khari rahegi = `fixed`
+- Student apni seat par baithi hai, lekin jab **ghar jane ka time aaye** to gate par chipak jaye = `sticky`
+
+### Syntax
+```css
+selector {
+  position: static | relative | absolute | fixed | sticky;
+}
+```
+
+### Position Values at a Glance
+
+| Value | Normal Flow mein? | Reference (kis se move hoga) |
+|-------|-------------------|-------------------------------|
+| `static` | Haan | Koi nahi (default) |
+| `relative` | Haan (jagah mehfooz rehti hai) | Apni **khud ki original position** |
+| `absolute` | **Nahi** (jagah khatam) | Sab se qareeb **positioned parent** |
+| `fixed` | **Nahi** (jagah khatam) | **Browser window (viewport)** |
+| `sticky` | Haan | Scroll hone par parent ke andar **chipak jata hai** |
+
+---
+
+## 2. Offset Properties (top, right, bottom, left)
+
+### Definition
+Yeh properties element ko **kisi reference point se kitna door** rakhna hai yeh batati hain. Yeh sirf tab kaam karti hain jab `position` **`static` ke ilawa koi bhi value** ho.
+
+| Property | Matlab |
+|----------|--------|
+| `top: 20px` | Reference ke **upar wale kinare se 20px neeche** |
+| `bottom: 20px` | Reference ke **neeche wale kinare se 20px upar** |
+| `left: 20px` | Reference ke **left kinare se 20px right ki taraf** |
+| `right: 20px` | Reference ke **right kinare se 20px left ki taraf** |
+
+> **Yaad rakhne ka tareeqa:** Property ka naam batata hai ke element **kis kinare se** door ho raha hai. `top: 20px` = "upar se 20px door".
+
+### Shortcut: `inset`
+```css
+.box {
+  position: absolute;
+  inset: 0;               /* top, right, bottom, left sab 0 (poora parent cover) */
+}
+
+.box2 {
+  position: absolute;
+  inset: 10px 20px;       /* top-bottom 10px | left-right 20px */
+}
+```
+
+---
+
+## 3. position: static
+
+### Definition
+Yeh **default value** hai. Element **Normal Flow** mein rehta hai. `top`, `right`, `bottom`, `left` aur `z-index` is par **kaam nahi karte**.
+
+### Real-Life Analogy
+Student apni **assigned seat** par baithi hai. Wahan se hilti nahi.
+
+### Syntax
+```css
+selector {
+  position: static;
+}
+```
+
+### Example 1: Default Behavior
+
+```html
+<p>Pehla paragraph</p>
+<p>Doosra paragraph</p>
+<p>Teesra paragraph</p>
+```
+
+```css
+p {
+  background-color: lightblue;
+  margin: 5px;
+}
+```
+
+**Output:** Teeno paragraphs upar se neeche order mein aate hain. Humne `position` likha hi nahi, phir bhi yeh `static` hain.
+
+---
+
+### Example 2: Static par Offset Kaam Nahi Karta
+
+```html
+<div class="box">Main hilunga?</div>
+```
+
+```css
+.box {
+  position: static;
+  top: 50px;
+  left: 50px;
+  background-color: yellow;
+  padding: 10px;
+}
+```
+
+**Output:** Box **apni jagah se nahi hilega**. `top` aur `left` ignore ho jate hain. Isi liye pehle `position: relative` likhna parta hai.
+
+---
+
+### Example 3: Position Reset Karna
+
+```html
+<div class="sidebar">Sidebar</div>
+```
+
+```css
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    position: static;   /* Mobile par normal flow mein wapas */
+  }
+}
+```
+
+**Output:** Bari screen par sidebar fixed rehta hai. Mobile par `static` hone se woh normal flow mein aa jata hai.
+
+---
+
+## 4. position: relative
+
+### Definition
+Element **Normal Flow mein hi rehta hai**, lekin `top`, `right`, `bottom`, `left` se apni **original position se** thora sa khisak sakta hai. Us ki **purani jagah khali (reserved) rehti hai**, is liye dusre elements apni jagah nahi badalte.
+
+### Real-Life Analogy
+Aap library mein apni **kursi thori peeche khiska** kar baith gaye. Lekin aap ki **purani jagah ab bhi aap ke naam** hai, dusra koi wahan nahi baith sakta, aur baaki sab ki kursiyan apni jagah par hain.
+
+```
+Pehle:                      Relative (left: 40px) ke baad:
+
+[ A ] [ B ] [ C ]           [ A ] [ __ ] [ C ]
+                                      [ B ]  <- B khisak gaya, lekin
+                                              uski jagah khali reh gayi
+```
+
+### Syntax
+```css
+selector {
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+```
+
+### Do Bohat Zaroori Kaam
+1. Element ko apni jagah se **thora hilana**.
+2. Child par `position: absolute` lagani ho to parent ko **`relative`** bana dena (agle section mein tafseel).
+
+---
+
+### Example 1: Element ko Thora Hilana
+
+```html
+<div class="box">Box 1</div>
+<div class="box shifted">Box 2 (hila hua)</div>
+<div class="box">Box 3</div>
+```
+
+```css
+.box {
+  width: 150px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: lightgreen;
+}
+
+.shifted {
+  position: relative;
+  left: 40px;
+  top: 5px;
+  background-color: orange;
+}
+```
+
+**Output:** Box 2 apni jagah se 40px right aur 5px neeche khisak jayega. Box 1 aur Box 3 apni jagah par rahenge, aur Box 2 ki purani jagah khali rahegi.
+
+---
+
+### Example 2: Hover Par Upar Uthna (Card Effect)
+
+```html
+<div class="card">Hover karo mujh par</div>
+```
+
+```css
+.card {
+  position: relative;
+  top: 0;
+  width: 200px;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid purple;
+  transition: top 0.3s;
+}
+
+.card:hover {
+  top: -8px;     /* 8px upar uthega */
+}
+```
+
+**Output:** Mouse laane par card halka sa upar uth jata hai. Yeh effect shopping websites ke product cards mein aam hai.
+
+---
+
+### Example 3: Parent Banana (Absolute Child ke liye)
+
+```html
+<div class="photo-box">
+  <img src="student.jpg" alt="Student" width="200">
+  <span class="tag">New</span>
 </div>
-
-## 📋 Table of Contents
-
-| # | Topic | ⏱ Time |
-|---|-------|---------|
-| 1 | [Instructor Introduction](#1-instructor-introduction) | 10 min |
-| 2 | [Student Introduction Activity](#2-student-introduction-activity) | 10 min |
-| 3 | [Introduction to Technology](#3-introduction-to-technology) | 10 min |
-| 4 | [History & Evolution of Technology](#4-history--evolution-of-technology) | 10 min |
-| 5 | [Introduction to Information Technology (IT)](#5-introduction-to-information-technology-it) | 15 min |
-| 6 | [Computer Fundamentals](#6-computer-fundamentals) | 15 min |
-| 7 | [Hardware and Software](#7-hardware-and-software) | 10 min |
-| 8 | [Internet and Digital World](#8-internet-and-digital-world) | 10 min |
-| 9 | [Introduction to Artificial Intelligence (AI)](#9-introduction-to-artificial-intelligence-ai) | 10 min |
-| 10 | [Current Technology Trends](#10-current-technology-trends) | 5 min |
-| 11 | [Future of Technology](#11-future-of-technology) | 5 min |
-| 12 | [Interactive Activities](#12-interactive-activities) | Throughout |
-| 13 | [Quiz Section (MCQs)](#13-quiz-section) | 10 min |
-| 14 | [Summary & Key Takeaways](#14-summary--key-takeaways) | 5 min |
-| 15 | [Homework Assignment](#15-homework-assignment) | — |
-
----
-
-## 1. 👩‍🏫 Instructor Introduction
-
-### About Your Instructor
-
-Welcome to your very first class of the **Certificate in Information Technology (CIT)** program! We are so excited to have you here.
-
-> **Instructor:** Sir Shahbaz Ahmed
-> **Qualification:** BS  in Computer Science
-> **Teaching Experience:** 4 years in IT Education
-
-### 📌 Course Objectives
-
-By the end of this course, you will be able to:
-
-| # | Objective |
-|---|-----------|
-| ✅ 1 | Understand the fundamentals of computers and information technology |
-| ✅ 2 | Use common software applications confidently |
-| ✅ 3 | Understand the Internet, email, and cloud computing |
-| ✅ 4 | Get introduced to Artificial Intelligence and its real-world uses |
-| ✅ 5 | Prepare yourself for a career in the world of technology |
-
-### 🌟 Why IT Matters Today
-
-> 💡 **Did You Know?** There are over **5 billion** internet users in the world today. Technology is used in hospitals, schools, banks, shops, homes — everywhere!
-
-Information Technology is not just about computers. It is about:
-- How information is **created**, **stored**, **processed**, and **shared**
-- Making life **easier, faster, and smarter**
-- Opening doors to **global careers** and opportunities
-
----
-
-## 2. 🤝 Student Introduction Activity
-
-### Ice-Breaker: "My Tech Story"
-
-> 🗣️ **Activity Instructions:** Each student stands up and answers 3 quick questions in 30 seconds:
-
-```
-1. What is your name?
-2. One technology you use every day?
-3. Why did you join this CIT course?
 ```
 
-### 💬 Discussion Prompts
+```css
+.photo-box {
+  position: relative;   /* span ka reference point yeh banega */
+  width: 200px;
+}
 
-| Question | Think About It... |
-|----------|-------------------|
-| 📱 How many times did you use your phone today? | Texting, social media, maps, calls? |
-| 💻 Have you ever used a computer? For what? | School, office, browsing? |
-| 🤖 Have you ever used ChatGPT or Siri? | What did you ask it? |
-| 🌐 What would life look like without the internet? | No Google, WhatsApp, YouTube? |
-
-> 🎯 **Instructor Note:** These questions help students realize they are *already* using IT daily — they just didn't know what to call it!
-
----
-
-## 3. 💡 Introduction to Technology
-
-### What is Technology?
-
-> **Definition:** Technology is the application of scientific knowledge to solve problems, improve our lives, and make tasks easier and faster.
-
-In simple words:
-> *Technology = Tools + Knowledge + Purpose*
-
-### 🛠️ Examples of Technology in Daily Life
-
-| Area | Technology Used | Example |
-|------|----------------|---------|
-| 🏠 Home | Smart devices | Fan remote, TV, microwave |
-| 🏥 Healthcare | Medical tech | X-ray machines, ECG monitors |
-| 🏫 Education | EdTech | Online classes, digital books |
-| 🛍️ Shopping | E-commerce | Daraz, Amazon, online banking |
-| 🚗 Transport | GPS & Vehicles | Google Maps, ride apps |
-| 🌾 Farming | AgriTech | Smart irrigation, weather apps |
-
-### ✅ Benefits vs ⚠️ Challenges of Technology
-
-| ✅ Benefits | ⚠️ Challenges |
-|------------|--------------|
-| Saves time and effort | Screen addiction |
-| Access to global information | Cybercrime & hacking |
-| Better healthcare | Privacy concerns |
-| Online jobs & remote work | Job displacement (automation) |
-| Communication across the world | Digital divide (not everyone has access) |
-
-> 🗣️ **Class Question:** *"Can you think of one way technology has made YOUR life easier this week?"*
-
----
-
-## 4. 🕰️ History & Evolution of Technology
-
-### The Big Picture: How Did We Get Here?
-
-```
-Stone Age ──► Agricultural Age ──► Industrial Revolution ──► Computer Age ──► Internet ──► AI Era
-(2M BC)         (10,000 BC)            (1760 AD)              (1940s)          (1990s)    (2020s)
+.tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  padding: 3px 8px;
+}
 ```
 
-### 📅 Technology Timeline
-
-| Era | Time Period | Key Innovation | Impact |
-|-----|-------------|---------------|--------|
-| 🪨 **Stone Age** | 2,000,000 BC | Stone tools, fire | Survival & shelter |
-| 🌾 **Agricultural Age** | 10,000 BC | Farming, wheel, writing | Food production, civilization |
-| ⚙️ **Industrial Revolution** | 1760–1840 AD | Steam engine, factories | Mass production |
-| 🖥️ **Computer Revolution** | 1940s–1980s | ENIAC, Personal Computer | Data processing |
-| 🌐 **Internet Revolution** | 1990s–2000s | World Wide Web, email | Global connectivity |
-| 📱 **Mobile & Social Era** | 2007–2015 | Smartphones, apps | Everything in your pocket |
-| 🤖 **Artificial Intelligence Era** | 2016–Present | ChatGPT, Machine Learning | Intelligent automation |
-
-### 🏆 Major Milestones
-
-| Year | Milestone |
-|------|-----------|
-| 1822 | Charles Babbage designs the first mechanical computer (Difference Engine) |
-| 1936 | Alan Turing proposes the concept of a universal computing machine |
-| 1946 | ENIAC — first general-purpose electronic computer (weighs 27 tons!) |
-| 1969 | ARPANET — the ancestor of the Internet |
-| 1981 | IBM Personal Computer (PC) introduced |
-| 1991 | World Wide Web (WWW) launched by Tim Berners-Lee |
-| 1998 | Google Search Engine founded |
-| 2004 | Facebook launched (social media era begins) |
-| 2007 | Apple iPhone — smartphones change everything |
-| 2022 | ChatGPT launched — AI becomes mainstream |
-
-> 🗣️ **Class Question:** *"What year were you born? What technology existed then that doesn't feel 'modern' anymore?"*
+**Output:** "New" tag photo ke **top-right corner** mein aayega. `.photo-box` par `relative` na hota to tag poore page ke corner mein chala jata.
 
 ---
 
-## 5. 💻 Introduction to Information Technology (IT)
+## 5. position: absolute
 
-### What is Information Technology?
+### Definition
+Element ko **Normal Flow se nikal deta hai**, yaani us ki **jagah khatam** ho jati hai aur baaki elements us ki jagah le lete hain. Yeh apne **sab se qareeb positioned ancestor** (jis par `static` ke ilawa koi bhi position ho) ke mutabiq place hota hai. Agar aisa koi ancestor na ho to **poore page (`html`)** ke mutabiq place hota hai.
 
-> **Definition:** Information Technology (IT) is the use of computers, software, networks, and digital tools to **store, process, transmit, and manage information**.
+### Real-Life Analogy
+Ek **photo frame** deewar par lagana hai. Aap kehte hain *"Frame ko **kamre ke left kone se 30cm** aur **chhat se 50cm neeche** lagao."* Frame ki position **kamre (parent)** ke hisab se naapi gayi. Agar frame ke aas paas ki jagah par pehle kuch rakha tha, to ab woh jagah khali nahi rehti, frame deewar par alag "tair" raha hai.
 
-### 📦 Components of IT
+### Sab Se Zaroori Rule
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                  INFORMATION TECHNOLOGY                  │
-├───────────┬───────────┬────────┬───────────┬────────────┤
-│ Hardware  │ Software  │  Data  │ Networks  │  Internet  │
-│ 🖥️ Devices │ 📱 Apps   │ 📊 Info │ 🔗 Cables │ 🌐 Web    │
-└───────────┴───────────┴────────┴───────────┴────────────┘
+absolute child  --->  dekhta hai: "Mera sab se qareeb positioned parent kaun hai?"
+
+   Mil gaya     -->  Us parent ke mutabiq place hoga
+   Nahi mila    -->  Poore page (html) ke mutabiq place hoga
 ```
 
-| Component | What It Is | Real Example |
-|-----------|-----------|-------------|
-| 🖥️ **Hardware** | Physical parts of a computer | Monitor, keyboard, mouse, printer |
-| 💾 **Software** | Programs that run on hardware | Windows, MS Word, Chrome browser |
-| 📊 **Data** | Raw facts and information | Student names, scores, phone numbers |
-| 🔗 **Networks** | Systems that connect devices | Wi-Fi, office network, Bluetooth |
-| 🌐 **Internet** | Global network of networks | Google, YouTube, WhatsApp |
+> **Golden Rule:** Absolute element ka **parent hamesha `position: relative`** rakhein, taake child apne parent ke andar rahe.
 
-### 🏭 IT in Different Industries
+### Syntax
+```css
+.parent {
+  position: relative;
+}
 
-| Industry | IT Application | Example |
-|----------|---------------|---------|
-| 🏥 Healthcare | Electronic Medical Records | Hospital patient management systems |
-| 🏦 Banking | Online Transactions | Mobile banking, ATM machines |
-| 🎓 Education | E-Learning | Zoom classes, Google Classroom |
-| 🛒 Retail | E-Commerce | Daraz, Amazon, online payments |
-| 🏛️ Government | Digital Services | Online NADRA, tax filing |
-| 🎬 Media | Digital Content | Netflix, YouTube, Spotify |
-
-> 🗣️ **Class Question:** *"Which industry do you think uses the MOST technology? Why?"*
-
----
-
-## 6. 🖥️ Computer Fundamentals
-
-### What is a Computer?
-
-> **Definition:** A computer is an **electronic device** that accepts data (input), processes it according to instructions (software), and produces useful results (output).
-
-### 🌟 Key Characteristics of a Computer
-
-| Characteristic | Meaning | Example |
-|---------------|---------|---------|
-| ⚡ **Speed** | Performs millions of tasks per second | Solving 1 million calculations instantly |
-| 🎯 **Accuracy** | Makes no mistakes on its own | Always calculates 2+2 = 4 |
-| 💾 **Storage** | Stores huge amounts of data | 1TB = 1,000,000 MB of data |
-| 🔄 **Versatility** | Can perform many different tasks | Writing, drawing, playing music |
-| 🤖 **Automation** | Works without human help | Auto-backup, scheduled tasks |
-| 😴 **No Fatigue** | Never gets tired | Can run 24 hours non-stop |
-
-### 🔄 The IPO Cycle (Input → Process → Output)
-
-```
-     INPUT              PROCESS              OUTPUT
-  ┌─────────┐        ┌──────────┐        ┌─────────┐
-  │Keyboard │ ──────►│   CPU    │──────► │ Monitor │
-  │  Mouse  │        │(Brain of │        │ Printer │
-  │Touchpad │        │   CPU)   │        │ Speaker │
-  └─────────┘        └──────────┘        └─────────┘
-  
-  📝 Example:
-  You TYPE a word (Input) → Computer SPELLS CHECK it (Process) → Shows result on screen (Output)
+.child {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 ```
 
-### 📂 Types of Computers
-
-| Type | Size | Used For | Example |
-|------|------|---------|---------|
-| 🖥️ **Desktop** | Large | Office work, gaming | Dell, HP Desktop PC |
-| 💻 **Laptop** | Medium | Portable work | MacBook, Lenovo ThinkPad |
-| 📱 **Tablet** | Small | Browsing, reading | iPad, Samsung Galaxy Tab |
-| 📲 **Smartphone** | Tiny | Everything mobile | iPhone, Samsung Galaxy |
-| 🏭 **Mainframe** | Very Large | Banks, government | IBM Mainframe |
-| ⚡ **Supercomputer** | Huge | Science, weather | IBM Summit |
-
-> 🗣️ **Class Question:** *"Which type of computer do YOU use most? Raise your hand!"*
+### Absolute ke Natayej
+- Element ki **jagah khatam** (parent ki height kam ho sakti hai).
+- Width **content jitni** ho jati hai (jab tak width set na ho).
+- Elements ek dusre ke **upar overlap** ho sakte hain.
 
 ---
 
-## 7. 🔧 Hardware and Software
-
-### The Big Difference
-
-| | Hardware | Software |
-|--|----------|---------|
-| **Definition** | Physical parts you can touch | Programs & instructions you can't touch |
-| **Can you touch it?** | ✅ Yes | ❌ No |
-| **Example** | Keyboard, monitor, RAM | Windows, Chrome, WhatsApp |
-| **Changes needed** | Buy new parts | Download or update |
-| **Analogy** | Human body (bones, organs) | Human mind (thoughts, knowledge) |
-
-### 🖱️ Hardware Examples
-
-| Category | Devices |
-|----------|---------|
-| ⌨️ **Input Devices** | Keyboard, Mouse, Microphone, Webcam, Scanner |
-| 🖥️ **Output Devices** | Monitor, Printer, Speaker, Projector |
-| 💾 **Storage Devices** | Hard Drive, USB Flash Drive, SD Card, SSD |
-| ⚙️ **Processing Unit** | CPU (Central Processing Unit) |
-| 🧠 **Memory** | RAM (Random Access Memory) |
-
-### 💿 Software Examples
-
-#### System Software — The Foundation
-
-> System Software manages the hardware and provides a platform for other software to run.
-
-| Software | Function |
-|---------|---------|
-| 🪟 Windows 11 | Operating system for PCs |
-| 🍎 macOS | Operating system for Apple Macs |
-| 🤖 Android | Operating system for smartphones |
-| 🐧 Linux | Free, open-source operating system |
-
-#### Application Software — The Tools
-
-> Application Software performs specific tasks for the user.
-
-| Category | Examples |
-|----------|---------|
-| 📝 Word Processing | Microsoft Word, Google Docs |
-| 📊 Spreadsheets | Microsoft Excel, Google Sheets |
-| 🎨 Design | Canva, Adobe Photoshop |
-| 🌐 Web Browsers | Chrome, Firefox, Edge |
-| 💬 Communication | WhatsApp, Gmail, Zoom |
-| 🎮 Entertainment | Games, Netflix, Spotify |
-
----
-
-## 8. 🌐 Internet and Digital World
-
-### What is the Internet?
-
-> **Definition:** The Internet is a **global network** of millions of connected computers and devices that communicate with each other using standard protocols.
-
-> Simple way to think about it:
-> *The Internet is like a giant web of roads connecting every computer in the world.*
-
-### 🔄 How the Internet Works (Simplified)
-
-```
-YOU type www.google.com
-        │
-        ▼
-Your Device sends a REQUEST through your Wi-Fi/Mobile Data
-        │
-        ▼
-The request travels through CABLES & SATELLITES worldwide
-        │
-        ▼
-Google's SERVER receives your request and sends back the webpage
-        │
-        ▼
-You SEE the Google homepage on your screen ✅
-```
-
-### 🌍 Key Internet Services
-
-| Service | What It Does | Example |
-|---------|-------------|---------|
-| 🔍 **Search Engine** | Finds information online | Google, Bing, DuckDuckGo |
-| 📧 **Email** | Sends digital messages/files | Gmail, Outlook, Yahoo Mail |
-| 🌐 **Web Browser** | Displays websites | Chrome, Firefox, Safari |
-| ☁️ **Cloud Computing** | Stores data online | Google Drive, Dropbox, iCloud |
-| 📱 **Social Media** | Connects people online | Facebook, Instagram, TikTok |
-| 🎥 **Streaming** | Watches video/music online | YouTube, Netflix, Spotify |
-| 🛒 **E-Commerce** | Online shopping | Amazon, Daraz, eBay |
-
-### ☁️ What is Cloud Computing?
-
-> **Cloud Computing** means storing and accessing data and programs over the Internet instead of on your own computer's hard drive.
-
-| Feature | Traditional Storage | Cloud Storage |
-|---------|--------------------|--------------| 
-| Location | Your device | Internet servers |
-| Access | Only on your device | Anywhere, any device |
-| Backup | Manual | Automatic |
-| Example | USB Drive | Google Drive |
-| Risk | Device lost = data lost | Safe from device damage |
-
-> 🗣️ **Class Question:** *"Have you ever saved a photo to Google Photos or iCloud? That's cloud computing!"*
-
----
-
-## 9. 🤖 Introduction to Artificial Intelligence (AI)
-
-### What is AI?
-
-> **Definition:** Artificial Intelligence (AI) is the ability of a **computer or machine** to perform tasks that normally require **human intelligence** — such as understanding language, recognizing faces, making decisions, and learning from experience.
-
-### 📜 Brief History of AI
-
-| Year | Milestone |
-|------|-----------|
-| 1950 | Alan Turing asks "Can machines think?" — the beginning of AI |
-| 1956 | The term "Artificial Intelligence" officially coined |
-| 1997 | IBM's Deep Blue defeats world chess champion Garry Kasparov |
-| 2011 | Apple launches Siri — first AI assistant on smartphones |
-| 2016 | Google AlphaGo defeats world Go champion |
-| 2022 | ChatGPT launched — AI goes mainstream worldwide |
-| 2023–Now | AI tools explode: image, video, voice, and text generation |
-
-### 🧠 Types of AI
-
-| Type | Description | Example |
-|------|-------------|---------|
-| 🐣 **Narrow AI** | Does one specific task | Siri, facial recognition, spam filters |
-| 🧠 **General AI** | Can do any intellectual task (like humans) | *Still theoretical / not yet achieved* |
-| 🚀 **Super AI** | Exceeds human intelligence in every way | *Future concept* |
-
-### 🤖 Popular AI Tools You May Already Know
-
-| Tool | Company | What It Does |
-|------|---------|-------------|
-| 💬 ChatGPT | OpenAI | Answers questions, writes essays, codes |
-| 🍎 Siri | Apple | Voice assistant on iPhones |
-| 🛒 Alexa | Amazon | Smart home voice assistant |
-| 🔍 Google Assistant | Google | AI-powered search & commands |
-| 🎨 DALL·E / Midjourney | OpenAI / Midjourney | Creates AI-generated images |
-| 🎵 Suno / Udio | Various | Generates AI music |
-| 🎥 Runway | Runway ML | Creates AI-generated videos |
-
-### 🌍 AI Applications Across Fields
-
-| Field | AI Use | Example |
-|-------|--------|---------|
-| 🏥 Healthcare | Diagnosing diseases | AI detecting cancer in X-rays |
-| 🎓 Education | Personalized learning | AI tutor apps, essay feedback |
-| 🏦 Banking | Fraud detection | Auto-blocking suspicious transactions |
-| 🚗 Transport | Self-driving cars | Tesla Autopilot |
-| 🛒 Retail | Recommendations | "You might also like..." on Amazon |
-| 🌐 Social Media | Content moderation | Auto-removing harmful posts |
-
-### ✅ Advantages vs ⚠️ Limitations of AI
-
-| ✅ Advantages | ⚠️ Limitations |
-|--------------|----------------|
-| Works 24/7 without rest | Can make mistakes (called "hallucinations") |
-| Processes huge data quickly | No emotions or empathy |
-| Detects patterns humans miss | Can reinforce bias if trained on biased data |
-| Automates boring, repetitive tasks | Risk of job displacement |
-| Personalized experience for users | Privacy concerns |
-
-> 🗣️ **Class Question:** *"Have you ever used ChatGPT? What did you ask it?"*
-
----
-
-## 10. 📡 Current Technology Trends
-
-> These are the **hottest technologies** shaping the world RIGHT NOW:
-
-| # | Trend | What It Is | Real Example |
-|---|-------|-----------|-------------|
-| 1 | 🤖 **Artificial Intelligence** | Machines that think & learn | ChatGPT, self-driving cars |
-| 2 | 🔒 **Cybersecurity** | Protecting data from hackers | Antivirus software, 2FA |
-| 3 | ☁️ **Cloud Computing** | Storing data online | Google Drive, AWS, Azure |
-| 4 | 📊 **Data Science** | Finding insights from big data | Netflix recommendations |
-| 5 | 📡 **Internet of Things (IoT)** | Smart connected devices | Smart TVs, smartwatches |
-| 6 | 🦾 **Robotics** | Automated physical machines | Amazon warehouse robots |
-| 7 | 🔗 **Blockchain** | Decentralized secure data | Bitcoin, digital contracts |
-| 8 | 🕶️ **VR & AR** | Virtual & Augmented Reality | Meta Quest, Pokémon GO |
-
----
-
-## 11. 🔮 Future of Technology
-
-### What's Coming in the Next 10–20 Years?
-
-| Technology | Prediction | Timeline |
-|-----------|-----------|---------|
-| 🏙️ Smart Cities | Fully automated city management (traffic, energy, safety) | 2030–2035 |
-| 🚗 Driverless Cars | Fully autonomous vehicles on all roads | 2030–2040 |
-| 🎓 AI Education | AI tutors replacing traditional textbooks | 2025–2030 |
-| 🧬 Biotech + AI | AI predicting and curing diseases before symptoms appear | 2035–2045 |
-| 🌌 Space Tech | Commercial space travel for civilians | 2040+ |
-| 🧠 Brain-Computer Interface | Controlling devices with your thoughts | 2035–2050 |
-
-### 💼 Future Job Market in IT
-
-> 🌟 **Great News for CIT Students!** The demand for IT professionals is growing EVERY year.
-
-| Job Role | Average Salary (Global) | Skill Needed |
-|----------|------------------------|-------------|
-| 💻 Web Developer | $70,000–$120,000/year | HTML, CSS, JavaScript |
-| 🤖 AI/ML Engineer | $100,000–$180,000/year | Python, Machine Learning |
-| 🔒 Cybersecurity Analyst | $80,000–$140,000/year | Networking, Security |
-| 📊 Data Analyst | $65,000–$110,000/year | Excel, SQL, Python |
-| ☁️ Cloud Engineer | $90,000–$150,000/year | AWS, Azure, GCP |
-| 📱 Mobile App Developer | $75,000–$130,000/year | Flutter, Swift, Kotlin |
-
-> 💪 **Motivational Note for Students:** *You are starting this journey at the PERFECT time. The IT industry is one of the fastest-growing sectors in the world. Pakistan alone needs hundreds of thousands of IT professionals. With dedication and curiosity, this course can be the beginning of a life-changing career. Every expert was once a beginner — just like you are today!*
-
----
-
-## 12. 🎯 Interactive Activities
-
-### Activity 1 — "Tech in My Life" Mapping
-
-> ✏️ Draw a circle with YOUR name in the center. Around it, write every piece of technology you used in the last 24 hours. Compare with a partner!
-
-### Activity 2 — "Is it Hardware or Software?"
-
-> 🃏 Your instructor will call out items. Students shout: **"HARDWARE!"** or **"SOFTWARE!"**
-
-| Item | Answer |
-|------|--------|
-| Mouse | Hardware |
-| Angry Birds game | Software |
-| USB drive | Hardware |
-| Windows 10 | Software |
-| RAM chip | Hardware |
-| WhatsApp | Software |
-
-### Activity 3 — Class Debate
-
-> 💬 Split into two teams and debate:
-> **"Is Artificial Intelligence a Blessing or a Threat to Humanity?"**
-
-| Team A (Blessing) 😊 | Team B (Threat) 😟 |
-|---------------------|-------------------|
-| Saves lives in healthcare | Can take away jobs |
-| Makes education accessible | Can be used for surveillance |
-| Solves climate change | Can spread misinformation |
-
-### 🤔 Critical Thinking Questions
-
-1. *"If you lost your smartphone for a week, how would your daily life change?"*
-2. *"Should AI be allowed to make decisions in hospitals? Why or why not?"*
-3. *"What technology do you wish existed that doesn't yet?"*
-4. *"Is the Internet making us smarter or lazier? Give examples."*
-
----
-
-## 13. 📝 Quiz Section
-
-### Multiple Choice Questions (MCQs)
-
-> **Instructions:** Circle the correct answer. *(Answers are at the bottom — no peeking!* 🙈*)*
-
----
-
-**Q1.** What does IT stand for?
-- A) International Technology
-- B) ✅ Information Technology
-- C) Internet Technology
-- D) Intelligent Thinking
-
----
-
-**Q2.** Which of the following is an example of **Input Device**?
-- A) Monitor
-- B) Printer
-- C) ✅ Keyboard
-- D) Speaker
-
----
-
-**Q3.** The "brain" of a computer is called:
-- A) RAM
-- B) Hard Drive
-- C) ✅ CPU
-- D) Monitor
-
----
-
-**Q4.** Which of the following is **Software**?
-- A) USB Drive
-- B) Keyboard
-- C) ✅ Microsoft Word
-- D) Monitor
-
----
-
-**Q5.** What does IPO stand for in computing?
-- A) Internet Protocol Online
-- B) ✅ Input, Process, Output
-- C) Information Power Output
-- D) Internal Process Operation
-
----
-
-**Q6.** Who invented the World Wide Web (WWW)?
-- A) Bill Gates
-- B) Steve Jobs
-- C) ✅ Tim Berners-Lee
-- D) Mark Zuckerberg
-
----
-
-**Q7.** Which is the largest type of computer used by governments and banks?
-- A) Laptop
-- B) Desktop
-- C) Tablet
-- D) ✅ Mainframe
-
----
-
-**Q8.** Cloud computing means:
-- A) Storing data on a USB drive
-- B) ✅ Storing and accessing data over the Internet
-- C) Saving files on your desktop
-- D) Using a printer wirelessly
-
----
-
-**Q9.** ChatGPT is an example of:
-- A) Hardware
-- B) Operating System
-- C) ✅ Artificial Intelligence
-- D) Web Browser
-
----
-
-**Q10.** Which of these is NOT a web browser?
-- A) Google Chrome
-- B) Mozilla Firefox
-- C) ✅ Microsoft Excel
-- D) Safari
-
----
-
-**Q11.** The first general-purpose electronic computer was:
-- A) IBM PC
-- B) ✅ ENIAC
-- C) Apple Mac
-- D) Difference Engine
-
----
-
-**Q12.** IoT stands for:
-- A) Intelligence of Technology
-- B) ✅ Internet of Things
-- C) Information of Transfer
-- D) Internet of Transfer
-
----
-
-**Q13.** Which of these is an example of System Software?
-- A) WhatsApp
-- B) Microsoft Word
-- C) Google Chrome
-- D) ✅ Windows 11
-
----
-
-**Q14.** RAM stands for:
-- A) Read And Memory
-- B) ✅ Random Access Memory
-- C) Rapid Access Module
-- D) Read Access Memory
-
----
-
-**Q15.** Which technology is used to secure digital transactions using a decentralized ledger?
-- A) Cloud Computing
-- B) Artificial Intelligence
-- C) ✅ Blockchain
-- D) Cybersecurity
-
----
-
-**Q16.** Alan Turing is famous for:
-- A) Inventing the iPhone
-- B) Creating Facebook
-- C) ✅ Proposing the concept of computing and asking "Can machines think?"
-- D) Building the first smartphone
-
----
-
-**Q17.** Which of the following is an AI voice assistant?
-- A) Google Chrome
-- B) ✅ Siri
-- C) Windows 11
-- D) Microsoft Excel
-
----
-
-**Q18.** In the IPO cycle, "Processing" is done by:
-- A) RAM
-- B) ✅ CPU
-- C) Hard Drive
-- D) Monitor
-
----
-
-**Q19.** VR stands for:
-- A) Very Real
-- B) ✅ Virtual Reality
-- C) Visual Reality
-- D) Video Reality
-
----
-
-**Q20.** Which company created ChatGPT?
-- A) Google
-- B) Apple
-- C) Microsoft
-- D) ✅ OpenAI
-
----
-
-
----
-
-## 14. 📌 Summary & Key Takeaways
-
-### 🔑 What We Learned Today
-
-| # | Key Concept | One-Line Summary |
-|---|------------|-----------------|
-| 1 | Technology | Application of knowledge to solve problems |
-| 2 | History of Tech | From stone tools → AI in 2 million years |
-| 3 | Information Technology | Computers + Networks + Data + Software |
-| 4 | IT Components | Hardware, Software, Data, Networks, Internet |
-| 5 | Computer | Electronic device for input, process, output |
-| 6 | IPO Cycle | Input → Process → Output |
-| 7 | Hardware vs Software | Physical vs Non-physical computer parts |
-| 8 | Internet | Global network connecting all computers |
-| 9 | Cloud Computing | Storing and accessing data online |
-| 10 | Artificial Intelligence | Machines that simulate human intelligence |
-| 11 | Tech Trends | AI, IoT, Blockchain, VR, Cybersecurity |
-| 12 | Future Tech | Smart cities, driverless cars, AI education |
-
-### 🌟 Words to Remember
-
-> **Technology • Hardware • Software • Internet • AI • Cloud • Data • Network • CPU • IPO**
-
----
-
-## 15. 📚 Homework Assignment
-
-### 📝 Part A — Theoretical Tasks
-
-**Task 1 — Research Task:**
-> Search online (or in a book) and write a **one-page report** on:
-> *"How is Artificial Intelligence changing the healthcare industry?"*
-> Include at least **3 examples** of AI tools used in hospitals.
-
-**Task 2 — Reflective Writing:**
-> Write a **short paragraph (150–200 words)** answering:
-> *"How has technology changed your daily life compared to how your parents or grandparents lived?"*
-
-**Task 3 — Timeline Creation:**
-> Create a **Technology Evolution Timeline** on paper or in a Word document.
-> Show at least **8 major milestones** from Stone Age to today.
-
----
-
-### 💻 Part B — Practical Tasks
-
-**Task 4 — Explore a Browser:**
-> Open **Google Chrome** (or any browser) and:
-> - Search for: *"Latest technology trends 2025"*
-> - Visit 2 different websites
-> - Write the names of **5 things you learned** from your search
-
-**Task 5 — Try an AI Tool:**
-> Visit **chatgpt.com** (it's free!) and ask it:
-> 1. *"What is Information Technology?"*
-> 2. *"Write a short poem about computers"*
-> - Write down ChatGPT's responses and bring them to the next class
-
-**Task 6 — Identify Tech in Your Home:**
-> Make a list of all the **technology devices** in your home.
-> Create a simple table with:
-> - Device Name
-> - Category (Input / Output / Storage / Communication)
-> - How your family uses it
-
----
-
-### 📋 Submission Details
-
-| Detail | Info |
-|--------|------|
-| 📅 Due Date | Next class |
-| 📝 Format | Handwritten or typed (either accepted) |
-| 🌐 Tools Allowed | Internet, notebooks, textbooks |
-| 🤝 Collaboration | Individual work only |
-| ❓ Questions | Ask your instructor or WhatsApp class group |
-
----
-
-<div align="center">
-
-## 🎉 Congratulations on Completing Lecture 1!
-
-> *"Every expert was once a beginner. Every pro was once an amateur. Start where you are. Use what you have. Do what you can."*
-> — Arthur Ashe
-
----
-
-### 🚀 See You in Lecture 2!
-
-**Next Topic:** Operating Systems, Microsoft Office, and Typing Practice
-
----
-
-![Footer](https://img.shields.io/badge/CIT%20Course-Lecture%201%20Complete-6C63FF?style=for-the-badge)
-![Made with](https://img.shields.io/badge/Made%20with-❤️%20for%20Students-FF6B6B?style=for-the-badge)
-
-*Certificate in Information Technology (CIT) | All Rights Reserved*
-
+### Example 1: Notification Badge
+
+```html
+<div class="bell">
+  Notifications
+  <span class="count">5</span>
 </div>
+```
+
+```css
+.bell {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: lightgray;
+}
+
+.count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-size: 12px;
+}
+```
+
+**Output:** Red badge button ke top-right corner par thora bahar nikla hua nazar aayega, bilkul WhatsApp ya Facebook ke unread count ki tarah.
+
+---
+
+### Example 2: Image ke Upar Text (Overlay)
+
+```html
+<div class="banner">
+  <img src="school.jpg" alt="School" width="400">
+  <h2 class="banner-text">Welcome to Our School</h2>
+</div>
+```
+
+```css
+.banner {
+  position: relative;
+  width: 400px;
+}
+
+.banner img {
+  display: block;
+  width: 100%;
+}
+
+.banner-text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 8px 15px;
+  margin: 0;
+}
+```
+
+**Output:** Text image ke **neeche left kone** mein image ke upar likha hua aayega.
+
+---
+
+### Example 3: Bilkul Center Mein Rakhna (Popup / Modal)
+
+```html
+<div class="overlay">
+  <div class="popup">
+    <button class="close">X</button>
+    <h3>Admission Open</h3>
+    <p>Aaj hi apply karein.</p>
+  </div>
+</div>
+```
+
+```css
+.overlay {
+  position: relative;
+  height: 300px;
+  background-color: lightgray;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);   /* khud ka aadha size wapas khench leta hai */
+  width: 250px;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid navy;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+```
+
+**Output:** Popup parent ke **bilkul beech** mein aayega, aur close button popup ke top-right corner mein.
+
+> **Center ka trick:** `top: 50%; left: 50%` se element ka **top-left corner** beech mein jata hai. `translate(-50%, -50%)` us ko apne **aadhe size jitna wapas** khench kar asal center mein le aata hai.
+
+---
+
+## 6. position: fixed
+
+### Definition
+Element **Normal Flow se nikal jata hai** aur **browser window (viewport)** ke mutabiq place hota hai. Page **scroll** karne par bhi yeh **apni jagah par hi rehta hai**.
+
+### Real-Life Analogy
+Class ke **board par laga hua clock**. Chahe teacher kahin bhi chali jaye, students kahin bhi baith jayein, clock **deewar par wahin laga rehta hai**.
+
+### Absolute vs Fixed
+
+| Feature | `absolute` | `fixed` |
+|---------|------------|---------|
+| Reference | Sab se qareeb positioned parent | **Browser window** |
+| Scroll karne par | Page ke sath **scroll hota hai** | **Apni jagah par rehta hai** |
+
+### Syntax
+```css
+selector {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+```
+
+---
+
+### Example 1: Fixed Navigation Bar
+
+```html
+<nav class="navbar">Home | About | Contact</nav>
+<div class="content">
+  <p>Bohat lamba content yahan aayega...</p>
+</div>
+```
+
+```css
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background-color: navy;
+  color: white;
+}
+
+.content {
+  margin-top: 60px;   /* navbar ke neeche chhup na jaye */
+  height: 2000px;
+}
+```
+
+**Output:** Scroll karne par navbar hamesha screen ke upar nazar aayega.
+
+> **Tip:** Fixed element normal flow se nikal jata hai, is liye content ko `margin-top` ya `padding-top` dena zaroori hai, warna content navbar ke peeche chhup jata hai.
+
+---
+
+### Example 2: Floating WhatsApp / Chat Button
+
+```html
+<a href="#" class="chat-btn">Chat</a>
+```
+
+```css
+.chat-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: green;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+}
+```
+
+**Output:** Chat button screen ke **neeche right corner** mein hamesha nazar aayega, chahe page kitna bhi scroll ho.
+
+---
+
+### Example 3: Cookie / Notice Banner
+
+```html
+<div class="cookie-bar">
+  Hum cookies istemal karte hain.
+  <button>Accept</button>
+</div>
+```
+
+```css
+.cookie-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+}
+```
+
+**Output:** Screen ke neeche poori width wala banner hamesha dikhta rahega.
+
+---
+
+## 7. position: sticky
+
+### Definition
+Sticky element **pehle normal (relative ki tarah)** behave karta hai. Jab scroll karte karte woh **screen ke kisi kinare (jo `top`/`bottom` waghera mein diya ho) tak pahunchta hai** to wahan **chipak (stick) jata hai**, jab tak us ka parent screen par maujood ho.
+
+### Real-Life Analogy
+Aap **notebook mein sticky note** lagate hain. Jab tak aap page palat rahe hain, note apni jagah par hai. Lekin agar woh note **kitab ke kinare par laga ho** to kitab ke pages palatte waqt bhi wahin chipka rehta hai. Isi tarah table ka heading row scroll karte waqt upar chipak jata hai.
+
+### Sticky ke Liye Shartein
+
+1. **Kam az kam ek offset dena zaroori hai** (aam taur par `top: 0`).
+2. Sticky element sirf apne **parent ke andar** hi chipakta hai. Parent khatam to sticky bhi khatam.
+3. Kisi ancestor par `overflow: hidden`, `overflow: auto` ya `overflow: scroll` ho to sticky **kaam nahi karta**.
+
+### Syntax
+```css
+selector {
+  position: sticky;
+  top: 0;
+}
+```
+
+---
+
+### Example 1: Sticky Header
+
+```html
+<header class="site-header">My School Website</header>
+<main>
+  <p>Bohat lamba content...</p>
+</main>
+```
+
+```css
+.site-header {
+  position: sticky;
+  top: 0;
+  padding: 15px;
+  background-color: navy;
+  color: white;
+}
+
+main {
+  height: 1500px;
+}
+```
+
+**Output:** Header shuru mein apni normal jagah par hoga. Scroll karne par jab woh screen ke upar pahunchega to wahin chipak jayega. (Fixed ke muqable mein is mein content ke liye `margin-top` ki zaroorat nahi parti.)
+
+---
+
+### Example 2: Table ka Heading Row
+
+```html
+<div class="table-box">
+  <table>
+    <thead>
+      <tr><th>Roll No</th><th>Name</th><th>Marks</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Ayesha</td><td>95</td></tr>
+      <tr><td>2</td><td>Fatima</td><td>90</td></tr>
+      <tr><td>3</td><td>Zainab</td><td>88</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+```css
+.table-box {
+  height: 150px;
+  overflow-y: auto;      /* is container ke andar scroll hoga */
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: gold;
+}
+```
+
+**Output:** Table ke andar scroll karne par heading row (Roll No, Name, Marks) upar chipki rahegi. Yahan scroll container `.table-box` hai, aur sticky usi ke mutabiq kaam karta hai.
+
+---
+
+### Example 3: Sticky Sidebar
+
+```html
+<div class="layout">
+  <aside class="side">Menu</aside>
+  <article class="article">Lamba article...</article>
+</div>
+```
+
+```css
+.layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;   /* zaroori: warna sidebar poori height le leta hai */
+}
+
+.side {
+  position: sticky;
+  top: 20px;
+  width: 150px;
+  padding: 15px;
+  background-color: lightblue;
+}
+
+.article {
+  height: 1500px;
+  flex: 1;
+}
+```
+
+**Output:** Article scroll hota hai lekin sidebar screen se 20px neeche upar chipka rehta hai.
+
+> **Aam ghalti:** Flex container mein `align-items: flex-start` na likhein to sidebar poori height le leta hai aur chipakne ke liye jagah hi nahi bachti.
+
+---
+
+## 8. z-index
+
+### Definition
+Jab elements **ek dusre ke upar overlap** karte hain to `z-index` decide karta hai ke **kaun upar** aur **kaun neeche** nazar aayega. Bara number = upar.
+
+### Real-Life Analogy
+Mez par **kai kitabein ek ke upar ek** rakhi hain. Jis kitab ka `z-index` zyada hai woh sab se upar, jis ka kam hai woh neeche dab jati hai.
+
+```
+z-index: 3   -->  [ Kitab C ]   (sab se upar)
+z-index: 2   -->  [ Kitab B ]
+z-index: 1   -->  [ Kitab A ]   (sab se neeche)
+```
+
+### Rules
+
+1. `z-index` sirf **positioned elements** par kaam karta hai (`relative`, `absolute`, `fixed`, `sticky`). (Flex ya Grid ke children par bhi kaam karta hai.)
+2. Bara number upar aata hai. Negative number bhi ho sakta hai (`-1`).
+3. Agar `z-index` same ho to **jo HTML mein baad mein likha ho woh upar** aata hai.
+4. Child apne **parent ke stacking group** se bahar nahi nikal sakta (stacking context).
+
+### Syntax
+```css
+selector {
+  position: relative;
+  z-index: 10;
+}
+```
+
+---
+
+### Example 1: Overlapping Boxes
+
+```html
+<div class="stack">
+  <div class="layer l1">1</div>
+  <div class="layer l2">2</div>
+  <div class="layer l3">3</div>
+</div>
+```
+
+```css
+.stack {
+  position: relative;
+  height: 150px;
+}
+
+.layer {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+}
+
+.l1 { background: tomato;     top: 0;    left: 0;    z-index: 3; }
+.l2 { background: gold;       top: 30px; left: 30px; z-index: 2; }
+.l3 { background: lightgreen; top: 60px; left: 60px; z-index: 1; }
+```
+
+**Output:** Box 1 (red) sab se upar, phir box 2 (yellow), aur box 3 (green) sab se neeche, chahe HTML mein woh aakhir mein likha ho.
+
+---
+
+### Example 2: Dropdown Menu Dusre Content ke Upar
+
+```html
+<div class="menu-box">
+  <button>Menu</button>
+  <ul class="dropdown">
+    <li>Profile</li>
+    <li>Settings</li>
+  </ul>
+</div>
+<p class="below">Yeh paragraph menu ke neeche hai.</p>
+```
+
+```css
+.menu-box {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;           /* paragraph ke upar dikhne ke liye */
+  background-color: white;
+  border: 1px solid gray;
+  list-style: none;
+  margin: 0;
+  padding: 5px 15px;
+}
+```
+
+**Output:** Dropdown list paragraph ke **upar** khulti hai, usay dhakel nahi deti.
+
+---
+
+### Example 3: Fixed Navbar ko Sab Se Upar Rakhna
+
+```html
+<nav class="navbar">Navbar</nav>
+<img src="banner.jpg" class="banner" alt="Banner">
+```
+
+```css
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: navy;
+  color: white;
+  z-index: 1000;      /* sab se upar */
+}
+
+.banner {
+  position: relative;
+  z-index: 1;
+}
+```
+
+**Output:** Scroll karte waqt image navbar ke **neeche se guzarti** hai, upar nahi aati. Agar navbar par `z-index` na ho to positioned image us ke upar aa sakti hai.
+
+---
+
+## 9. Quick Comparison Table
+
+| Feature | `static` | `relative` | `absolute` | `fixed` | `sticky` |
+|---------|----------|------------|------------|---------|----------|
+| Normal flow mein? | Haan | Haan | **Nahi** | **Nahi** | Haan |
+| Purani jagah reserved? | Haan | Haan | Nahi | Nahi | Haan |
+| `top/left` kaam karte hain? | Nahi | Haan | Haan | Haan | Haan |
+| Reference | Koi nahi | Apni jagah | Positioned parent | Viewport | Scroll container |
+| Scroll par | Scroll hota hai | Scroll hota hai | Scroll hota hai | **Jama rehta hai** | **Chipak jata hai** |
+| `z-index` kaam karta hai? | Nahi | Haan | Haan | Haan | Haan |
+| Aam istemal | Default | Thora hilana, parent banana | Badge, overlay, popup | Navbar, chat button | Sticky header |
+
+### Yaad Rakhne Ka Aasan Tareeqa
+
+- **static** = apni seat par
+- **relative** = seat par rehkar thora khisko, jagah apni hai
+- **absolute** = seat chhor di, parent ke mutabiq jagah lo
+- **fixed** = screen par chipak jao, scroll se farq nahi
+- **sticky** = normal rehte ho, kinare par pahunch kar chipak jao
+
+### Konsi Position Kab Use Karein?
+
+| Zaroorat | Position |
+|----------|----------|
+| Element ko thora sa hilana | `relative` |
+| Badge ya icon kisi box ke corner mein | Parent `relative` + child `absolute` |
+| Image ke upar text | Parent `relative` + text `absolute` |
+| Popup ko center mein rakhna | `absolute` + `translate(-50%, -50%)` |
+| Navbar jo hamesha upar rahe | `fixed` ya `sticky` |
+| Floating chat button | `fixed` |
+| Table heading scroll par chipki rahe | `sticky` |
+| Elements ko overlap kar ke order dena | `z-index` |
+
+---
+
+## 10. Common Mistakes
+
+| Ghalti | Wajah | Hal |
+|--------|-------|-----|
+| `top: 20px` kaam nahi kar raha | Position `static` hai (default) | `position: relative` ya koi aur value likhein |
+| Absolute child poore page ke corner mein chala gaya | Parent par `position: relative` nahi | Parent par `position: relative` lagayein |
+| Parent ki height zero ho gayi | Child `absolute` hone se flow se nikal gaya | Parent ko height dein |
+| Fixed navbar ke peeche content chhup gaya | Fixed element ki jagah khatam ho jati hai | Content par `margin-top` ya `padding-top` dein |
+| `sticky` kaam nahi kar raha | `top` nahi diya, ya parent par `overflow: hidden` hai | `top: 0` dein aur ancestors ka `overflow` check karein |
+| `z-index` ka koi asar nahi | Element `static` hai | `position: relative` jaisi koi position dein |
+| Bara `z-index` dene par bhi neeche hai | Parent ka stacking context alag hai | Parent ka `z-index` check karein |
+
+---
+
+## 11. Practice Tasks
+
+1. Teen boxes banayen. Beech wale ko `position: relative` aur `left: 50px` dein. Dekhein ke baaki boxes hilte hain ya nahi.
+2. Ek photo card banayen jis ke top-right corner mein "Sale" badge ho (relative parent aur absolute child).
+3. Ek image par `position: absolute` se text neeche left mein likhein.
+4. Ek popup box ko `top: 50%; left: 50%` aur `translate(-50%, -50%)` se bilkul center mein layen.
+5. Ek `fixed` navigation bar banayen aur neeche lamba content rakh kar scroll karke dekhein.
+6. Ek floating "Back to Top" button banayen jo screen ke neeche right corner mein rahe.
+7. Ek table banayen jis ka heading row `sticky` ho.
+8. Teen overlapping boxes banayen aur `z-index` se unka order badlein.
+
+---
+
+## 12. Mini Project Ideas
+
+### Project 1: Product Card with Badge (Beginner)
+
+**Requirements:**
+- [ ] Card par image, naam aur qeemat
+- [ ] Image ke top-left par "Sale" badge (`absolute`)
+- [ ] Image ke top-right par heart icon (`absolute`)
+- [ ] Hover par card thora upar uthe (`relative` + `top`)
+
+### Project 2: School Landing Page (Intermediate)
+
+**Requirements:**
+- [ ] `fixed` ya `sticky` navbar
+- [ ] Hero section mein image ke upar text (`absolute`)
+- [ ] Neeche right corner mein floating "Contact" button (`fixed`)
+- [ ] Cookie banner screen ke neeche (`fixed`)
+
+### Project 3: Result Table Page (Intermediate)
+
+**Requirements:**
+- [ ] Students ki lambi table (kam az kam 15 rows)
+- [ ] Heading row scroll par chipki rahe (`sticky`)
+- [ ] Pehla column (naam) bhi chipka rahe (`sticky` + `left: 0`)
+
+### Project 4: Popup / Modal Window (Advanced)
+
+**Requirements:**
+- [ ] "Open" button dabane par popup khule
+- [ ] Peeche poori screen par dhundhla overlay (`fixed` + `inset: 0`)
+- [ ] Popup bilkul center mein (`absolute` ya `fixed` + `translate`)
+- [ ] Popup ke corner mein close button (`absolute`)
+- [ ] Sahi `z-index` order (overlay, phir popup, phir close button)
+
+---
+
+## 13. Complete Practice Code
+
+Neeche complete code hai. Isay `index.html` mein copy karke browser mein open karein aur scroll karke dekhein:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Position Practice</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 70px 20px 100px;   /* fixed navbar ke liye upar jagah */
+      line-height: 1.6;
+    }
+
+    /* FIXED: navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px 20px;
+      background-color: navy;
+      color: white;
+      z-index: 1000;
+    }
+
+    /* FIXED: floating button */
+    .chat-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: green;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      z-index: 1000;
+    }
+
+    /* RELATIVE: thora hilana */
+    .box {
+      width: 150px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: lightgreen;
+    }
+    .shifted {
+      position: relative;
+      left: 40px;
+      background-color: orange;
+    }
+
+    /* RELATIVE parent + ABSOLUTE child: badge */
+    .product {
+      position: relative;
+      width: 220px;
+      padding: 20px;
+      margin: 30px 0;
+      border: 2px solid purple;
+      text-align: center;
+    }
+    .badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: red;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 13px;
+    }
+
+    /* ABSOLUTE: center popup */
+    .stage {
+      position: relative;
+      height: 200px;
+      background-color: lightgray;
+      margin-bottom: 30px;
+    }
+    .popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      padding: 20px;
+      background-color: white;
+      border: 2px solid navy;
+      text-align: center;
+    }
+
+    /* Z-INDEX: overlapping */
+    .stack { position: relative; height: 170px; margin-bottom: 30px; }
+    .layer { position: absolute; width: 100px; height: 100px; color: white; font-size: 24px; text-align: center; line-height: 100px; }
+    .l1 { background: tomato;     top: 0;    left: 0;    z-index: 3; }
+    .l2 { background: goldenrod;  top: 30px; left: 30px; z-index: 2; }
+    .l3 { background: seagreen;   top: 60px; left: 60px; z-index: 1; }
+
+    /* STICKY: scrolling area ke andar heading */
+    .scroll-area {
+      height: 180px;
+      overflow-y: auto;
+      border: 2px solid gray;
+    }
+    .sticky-head {
+      position: sticky;
+      top: 0;
+      padding: 10px;
+      background-color: gold;
+      font-weight: bold;
+    }
+    .scroll-area p { padding: 0 10px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">Fixed Navbar | Home | About | Contact</nav>
+  <a href="#" class="chat-btn">Chat</a>
+
+  <h2>1. Relative</h2>
+  <div class="box">Box 1</div>
+  <div class="box shifted">Box 2 (hila hua)</div>
+  <div class="box">Box 3</div>
+
+  <h2>2. Relative parent + Absolute child</h2>
+  <div class="product">
+    <span class="badge">Sale</span>
+    <h3>School Bag</h3>
+    <p>Rs. 1500</p>
+  </div>
+
+  <h2>3. Absolute: Center Popup</h2>
+  <div class="stage">
+    <div class="popup">Main bilkul center mein hoon</div>
+  </div>
+
+  <h2>4. z-index</h2>
+  <div class="stack">
+    <div class="layer l1">1</div>
+    <div class="layer l2">2</div>
+    <div class="layer l3">3</div>
+  </div>
+
+  <h2>5. Sticky (neeche box ke andar scroll karein)</h2>
+  <div class="scroll-area">
+    <div class="sticky-head">Main chipka rahunga</div>
+    <p>Line 1</p><p>Line 2</p><p>Line 3</p><p>Line 4</p><p>Line 5</p>
+    <p>Line 6</p><p>Line 7</p><p>Line 8</p><p>Line 9</p><p>Line 10</p>
+  </div>
+
+  <p style="height: 600px;">Page scroll karke dekhein: navbar aur chat button apni jagah par rehte hain.</p>
+
+</body>
+</html>
+```
+
+---
+
+**Happy Learning!** Agar koi sawal ho to class mein pooch lein.
