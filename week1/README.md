@@ -1,4 +1,4 @@
-# JavaScript Class Notes (Roman Urdu)
+# JavaScript Class Notes
 
 ## 1. JavaScript kya hai?
 
