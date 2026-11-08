@@ -343,6 +343,655 @@ console.log(umar < 18 || licenseHai);    // true
 console.log(!licenseHai);                // false
 ```
 
+# JavaScript: Logical Operators (&&, ||, !)
+
+> **Note:** Is lecture mein sirf Logical Operators ka concept hai. Humne `if / else` use nahi kiya, sirf `console.log()` se result dekha hai. Result hamesha **true** ya **false** hota hai.
+
+---
+
+## Lecture Roadmap
+
+| Step | Topic | Maqsad |
+| --- | --- | --- |
+| 1 | Logical Operator kya hai? | Concept samajhna |
+| 2 | AND (`&&`) | Sab conditions sahi hon |
+| 3 | OR (`\|\|`) | Koi ek condition sahi ho |
+| 4 | NOT (`!`) | Natija ulta karna |
+| 5 | Teeno ka muqabla | Farq samajhna |
+| 6 | Practice Questions | Khud karke seekhna |
+
+---
+
+## Step 1: Logical Operator kya hai?
+
+### Pehle yaad karein: Boolean
+
+Pichle lecture mein humne Boolean data type seekha tha. Boolean ki sirf do values hoti hain:
+
+```javascript
+true    // haan, sahi
+false   // naa, ghalat
+```
+
+### Logical Operator ka matlab
+
+Logical Operator **do ya zyada conditions ko jod kar** ek final jawab (**true ya false**) deta hai.
+
+**Real life example:**
+
+> Ek restaurant mein entry ke liye rule hai: *"Aap ke paas ticket ho **aur** aap ki age 12 saal se zyada ho."*
+
+Yahan do conditions hain aur dono ko jod kar faisla hota hai. Programming mein yeh jorne ka kaam Logical Operators karte hain.
+
+### JavaScript ke 3 Logical Operators
+
+| Operator | Naam | Urdu mein | Kaam |
+| --- | --- | --- | --- |
+| `&&` | AND | **Aur** | **Sab** conditions true hon to true |
+| `\|\|` | OR | **Ya** | **Koi ek** condition true ho to true |
+| `!` | NOT | **Nahi / Ulta** | True ko false, false ko true bana deta hai |
+
+### Logical Operators kyun use karte hain?
+
+- Ek se zyada conditions ko **ek sath** check karne ke liye.
+- Real life ke **mushkil faislay** (decisions) program mein likhne ke liye.
+- Code chhota aur saaf rakhne ke liye (har condition alag likhne ki zaroorat nahi).
+
+---
+
+## Step 2: AND Operator (`&&`)
+
+### Matlab
+
+AND ka matlab hai **"aur"**. Result tab **true** hota hai jab **dono (ya saari) conditions true** hon. Agar **ek bhi false** ho to poora result **false**.
+
+### Real life example
+
+> Gaari chalane ka license tab milta hai jab aap ki age 18 se zyada ho **aur** aap ke paas CNIC ho.
+
+Agar sirf age sahi hai aur CNIC nahi hai, to license nahi milega. **Dono zaroori hain.**
+
+### Truth Table (AND)
+
+| Condition 1 | Condition 2 | Condition 1 `&&` Condition 2 |
+| --- | --- | --- |
+| true | true | **true** |
+| true | false | false |
+| false | true | false |
+| false | false | false |
+
+**Yaad rakhne ka tareeqa:** AND sakht (strict) hai. **Result sirf ek surat mein true hai: dono true.**
+
+### Diagram
+
+```
+┌─────────────┐
+│ Condition 1 │── false ──►  Result: FALSE
+└─────────────┘
+   │
+  true
+   │
+   ▼
+┌─────────────┐
+│ Condition 2 │── false ──►  Result: FALSE
+└─────────────┘
+   │
+  true
+   │
+   ▼
+ Result: TRUE   (dono true the)
+```
+
+**Diagram kaise parhein:** Box = condition check. Right side = jahan condition **false** nikli to seedha **FALSE**. Neeche = condition true nikli to agle box par jao. Jab saare boxes pass ho jayen, tab hi **TRUE** milta hai.
+
+### Syntax
+
+```javascript
+condition1 && condition2
+```
+
+### Example 1: Driving License
+
+```javascript
+var age = 20;
+var hasCNIC = true;
+
+console.log(age >= 18 && hasCNIC);
+```
+
+**Output:**
+
+```text
+true
+```
+
+**Step by step:**
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `age >= 18` yaani `20 >= 18` | true |
+| 2 | `hasCNIC` | true |
+| 3 | `true && true` | **true** |
+
+### Example 2: Login (Username aur Password)
+
+```javascript
+var username = "ayesha";
+var password = "1234";
+
+console.log(username === "ayesha" && password === "1234");
+```
+
+**Output:** `true`
+
+Agar password `"9999"` hota to output `false` aata, kyun ke dono sahi hone zaroori hain.
+
+### Example 3: Scholarship
+
+```javascript
+var marks = 90;
+var income = 60000;
+
+console.log(marks >= 85 && income < 50000);
+```
+
+**Output:** `false`
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `marks >= 85` yaani `90 >= 85` | true |
+| 2 | `income < 50000` yaani `60000 < 50000` | **false** |
+| 3 | `true && false` | **false** |
+
+**Wajah:** Marks wali condition sahi hai, lekin income wali ghalat hai, is liye scholarship nahi milegi.
+
+### Example 4: Exam Eligibility
+
+```javascript
+var attendance = 80;
+var feePaid = true;
+
+console.log(attendance >= 75 && feePaid);   // true
+```
+
+### Example 5: ATM Card
+
+```javascript
+var cardValid = true;
+var pinCorrect = false;
+
+console.log(cardValid && pinCorrect);   // false
+```
+
+### AND ke aur real life examples
+
+| Situation | Condition 1 | Condition 2 |
+| --- | --- | --- |
+| Online class join karna | Internet chal raha ho | Laptop ki battery 20% se zyada ho |
+| Passport apply karna | Age 18 se zyada ho | CNIC ho |
+| Free delivery milna | Order 3000 se zyada ho | Customer member ho |
+| Gym membership | Fee jama ho | Medical certificate ho |
+
+---
+
+## Step 3: OR Operator (`||`)
+
+### Matlab
+
+OR ka matlab hai **"ya"**. Result tab **true** hota hai jab **koi ek condition true** ho. Result sirf tab **false** hota hai jab **dono (ya saari) false** hon.
+
+### Real life example
+
+> Aap school se chhutti kar sakti hain agar aaj Sunday ho **ya** public holiday ho.
+
+Dono mein se ek bhi wajah ho to chhutti mil jati hai. **Ek kafi hai.**
+
+### Truth Table (OR)
+
+| Condition 1 | Condition 2 | Condition 1 `\|\|` Condition 2 |
+| --- | --- | --- |
+| true | true | **true** |
+| true | false | **true** |
+| false | true | **true** |
+| false | false | false |
+
+**Yaad rakhne ka tareeqa:** OR naram (flexible) hai. **Result sirf ek surat mein false hai: dono false.**
+
+### Diagram
+
+```
+┌─────────────┐
+│ Condition 1 │── true ──►  Result: TRUE
+└─────────────┘
+   │
+ false
+   │
+   ▼
+┌─────────────┐
+│ Condition 2 │── true ──►  Result: TRUE
+└─────────────┘
+   │
+ false
+   │
+   ▼
+ Result: FALSE   (dono false the)
+```
+
+**Diagram kaise parhein:** Jis box mein bhi condition **true** nikli, seedha right side par **TRUE** mil gaya, aage dekhne ki zaroorat nahi. Agar dono false hon to hi neeche **FALSE** milta hai.
+
+### Syntax
+
+```javascript
+condition1 || condition2
+```
+
+**Tip:** `||` keyboard par Enter key ke upar wali `\` key ko **Shift** ke sath dabane se aata hai.
+
+### Example 1: School Holiday
+
+```javascript
+var day = "Monday";
+var isPublicHoliday = true;
+
+console.log(day === "Sunday" || isPublicHoliday);
+```
+
+**Output:**
+
+```text
+true
+```
+
+**Step by step:**
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `day === "Sunday"` yaani `"Monday" === "Sunday"` | false |
+| 2 | `isPublicHoliday` | true |
+| 3 | `false \|\| true` | **true** |
+
+### Example 2: Payment
+
+```javascript
+var hasCash = false;
+var hasCard = true;
+
+console.log(hasCash || hasCard);   // true
+```
+
+### Example 3: Senior Citizen ya Student Discount
+
+```javascript
+var isStudent = false;
+var age = 65;
+
+console.log(isStudent || age >= 60);   // true
+```
+
+### Example 4: Medical Leave
+
+```javascript
+var hasFever = false;
+var hasHeadache = false;
+
+console.log(hasFever || hasHeadache);   // false
+```
+
+**Wajah:** Dono wajahein false hain, is liye chhutti ki koi wajah nahi.
+
+### Example 5: Event Entry
+
+```javascript
+var hasTicket = true;
+var hasInvitation = false;
+
+console.log(hasTicket || hasInvitation);   // true
+```
+
+### OR ke aur real life examples
+
+| Situation | Condition 1 | Condition 2 |
+| --- | --- | --- |
+| Result mein pass hona | Maths mein 40+ marks | English mein 40+ marks |
+| Shopping payment | Cash ho | Card ho |
+| Weekend trip | Din Saturday ho | Din Sunday ho |
+| Cafeteria discount | Teacher ho | Discount coupon ho |
+
+---
+
+## Step 4: NOT Operator (`!`)
+
+### Matlab
+
+NOT ka matlab hai **"nahi"** ya **"ulta"**. Yeh sirf **ek** value par kaam karta hai aur usay **ulta** kar deta hai.
+
+- `true` ko `false` bana deta hai.
+- `false` ko `true` bana deta hai.
+
+### Real life example
+
+> Agar darwaza band **nahi** hai (NOT closed), to iska matlab darwaza khula hai.
+
+### Truth Table (NOT)
+
+| Value | `!` Value |
+| --- | --- |
+| true | **false** |
+| false | **true** |
+
+### Syntax
+
+```javascript
+!condition
+```
+
+### Example 1: Door Lock
+
+```javascript
+var isDoorLocked = true;
+
+console.log(!isDoorLocked);   // false
+```
+
+### Example 2: Phone Silent Mode
+
+```javascript
+var isSilent = false;
+
+console.log(!isSilent);   // true (phone silent nahi hai, yaani awaaz aayegi)
+```
+
+### Example 3: NOT ke sath comparison (brackets zaroori hain)
+
+```javascript
+var age = 16;
+
+console.log(!(age >= 18));   // true
+```
+
+**Step by step:**
+
+| Step | Kaam | Result |
+| --- | --- | --- |
+| 1 | `age >= 18` yaani `16 >= 18` | false |
+| 2 | `!false` | **true** |
+
+**Dhyan dein:** Comparison ke sath NOT lagana ho to condition ko **brackets `( )`** mein likhein.
+
+---
+
+## Step 5: Teeno Operators ka Muqabla
+
+| | AND (`&&`) | OR (`\|\|`) | NOT (`!`) |
+| --- | --- | --- | --- |
+| Urdu mein | **Aur** | **Ya** | **Ulta** |
+| Kitni values par kaam? | Do ya zyada | Do ya zyada | Sirf ek |
+| Kab true? | Jab **sab** true hon | Jab **koi ek** true ho | Jab value **false** ho |
+| Kab false? | Jab **koi ek** false ho | Jab **sab** false hon | Jab value **true** ho |
+| Mizaj | Sakht (strict) | Naram (flexible) | Ulta karne wala |
+| Real life | License: age **aur** CNIC | Payment: cash **ya** card | Darwaza band **nahi** hai |
+
+### Ek hi situation, teeno operators ke sath
+
+```javascript
+var hasTicket = true;
+var hasInvitation = false;
+
+console.log(hasTicket && hasInvitation);   // false (dono chahiye the)
+console.log(hasTicket || hasInvitation);   // true  (ek kafi hai)
+console.log(!hasTicket);                   // false (true ka ulta)
+```
+
+### Common Mistakes (aam ghaltiyan)
+
+| Ghalat | Sahi | Wajah |
+| --- | --- | --- |
+| `age >= 18 && <= 60` | `age >= 18 && age <= 60` | Dono taraf **poori condition** likhni hoti hai |
+| `day = "Sunday" \|\| isHoliday` | `day === "Sunday" \|\| isHoliday` | `=` value assign karta hai, muqabla nahi, `===` use karein |
+| `&` ya `\|` (ek ek) | `&&` ya `\|\|` (do do) | Logical operators mein **do symbols** hote hain |
+| `!age >= 18` | `!(age >= 18)` | Comparison ke sath NOT lagate waqt **brackets** zaroori hain |
+
+---
+
+## Step 6: Practice Questions (Students ke liye)
+
+**Hidayat:** Har question mein `console.log()` se expression ka result print karna hai. Result `true` ya `false` aayega.
+
+### Section A: AND (`&&`) Questions
+
+**Question 1: Library Membership**
+
+- **Scenario:** Library mein membership tab milti hai jab student ki age 15 se zyada ho **aur** uske paas student card ho. Hira ki age 17 saal hai aur uske paas student card hai.
+- **Given:** `var age = 17;` aur `var hasStudentCard = true;`
+- **Task:** AND operator se dono conditions check karein aur result console mein print karein.
+- **Expected Output:** `true`
+
+**Question 2: Online Class**
+
+- **Scenario:** Online class join karne ke liye internet chal raha ho **aur** laptop ki battery 20% se zyada ho. Sana ka internet chal raha hai lekin battery sirf 15% hai.
+- **Given:** `var internetOn = true;` aur `var battery = 15;`
+- **Task:** AND operator se result print karein.
+- **Expected Output:** `false`
+
+**Question 3: Free Delivery**
+
+- **Scenario:** Online store par free delivery tab milti hai jab order 3000 rupay ya us se zyada ka ho **aur** customer store ka member ho. Maryam ka order 3500 rupay ka hai lekin woh member nahi hai.
+- **Given:** `var orderAmount = 3500;` aur `var isMember = false;`
+- **Task:** AND operator se result print karein.
+- **Expected Output:** `false`
+
+**Question 4: Passport Application**
+
+- **Scenario:** Passport apply karne ke liye age 18 saal ya us se zyada ho **aur** CNIC ho. Fatima ki age 25 saal hai aur uske paas CNIC hai.
+- **Given:** `var age = 25;` aur `var hasCNIC = true;`
+- **Task:** AND operator se result print karein.
+- **Expected Output:** `true`
+
+### Section B: OR (`||`) Questions
+
+**Question 5: Cafeteria Discount**
+
+- **Scenario:** Cafeteria mein discount unhein milta hai jo teacher hon **ya** jinke paas discount coupon ho. Zainab teacher nahi hai lekin uske paas coupon hai.
+- **Given:** `var isTeacher = false;` aur `var hasCoupon = true;`
+- **Task:** OR operator se result print karein.
+- **Expected Output:** `true`
+
+**Question 6: Weekend Trip**
+
+- **Scenario:** Ayesha ki family trip tab hoti hai jab din Saturday ho **ya** Sunday ho. Aaj Sunday hai.
+- **Given:** `var day = "Sunday";`
+- **Task:** OR operator se `day === "Saturday"` aur `day === "Sunday"` ko jor kar result print karein.
+- **Expected Output:** `true`
+
+**Question 7: Concert Entry**
+
+- **Scenario:** Concert mein entry ke liye ticket ho **ya** invitation card ho. Noor ke paas na ticket hai na invitation card.
+- **Given:** `var hasTicket = false;` aur `var hasInvitation = false;`
+- **Task:** OR operator se result print karein.
+- **Expected Output:** `false`
+
+**Question 8: Subject Pass**
+
+- **Scenario:** Ek competition mein shamil hone ke liye Maths mein 40 marks ya English mein 40 marks hone chahiye (koi ek kafi hai). Areeba ke Maths mein 35 aur English mein 55 marks hain.
+- **Given:** `var mathMarks = 35;` aur `var englishMarks = 55;`
+- **Task:** OR operator se `mathMarks >= 40` aur `englishMarks >= 40` ko jor kar result print karein.
+- **Expected Output:** `true`
+
+### Section C: NOT (`!`) Questions
+
+**Question 9: Rain Check**
+
+- **Scenario:** Aaj baarish nahi ho rahi. Humein check karna hai ke "baarish nahi ho rahi" wali baat sahi hai ya nahi.
+- **Given:** `var isRaining = false;`
+- **Task:** NOT operator se `isRaining` ko ulta karke result print karein.
+- **Expected Output:** `true`
+
+**Question 10: WiFi Status**
+
+- **Scenario:** Ek app ko check karna hai ke WiFi connected **nahi** hai kya. Abhi WiFi connected hai.
+- **Given:** `var isWifiConnected = true;`
+- **Task:** NOT operator se result print karein.
+- **Expected Output:** `false`
+
+**Question 11: Underage Check**
+
+- **Scenario:** Hania ki age 16 saal hai. Humein check karna hai ke woh adult **nahi** hai kya (adult ka matlab age 18 ya zyada).
+- **Given:** `var age = 16;`
+- **Task:** NOT aur comparison operator ko brackets ke sath use karke `!(age >= 18)` ka result print karein.
+- **Expected Output:** `true`
+
+### Section D: Predict the Output (Bina run kiye batayein)
+
+**Question 12:**
+
+```javascript
+var a = true;
+var b = false;
+
+console.log(a && b);
+console.log(a || b);
+console.log(!a);
+console.log(!b);
+```
+
+- **Task:** Chaaron lines ka output likhein.
+- **Expected Output:**
+
+```text
+false
+true
+false
+true
+```
+
+**Question 13:**
+
+```javascript
+var x = 10;
+
+console.log(x > 5 && x < 8);
+console.log(x > 5 || x < 8);
+console.log(!(x > 5));
+```
+
+- **Task:** Teenon lines ka output likhein aur har step ki wajah batayein.
+- **Expected Output:**
+
+```text
+false
+true
+false
+```
+
+**Wajah:** `x > 5` true hai aur `x < 8` false hai. AND mein ek false ho to result false, OR mein ek true ho to result true, aur `!(true)` false hota hai.
+
+### Section E: Truth Table Challenge
+
+**Question 14:** Neeche di gayi table khud complete karein.
+
+| A | B | A `&&` B | A `\|\|` B | `!A` |
+| --- | --- | --- | --- | --- |
+| true | true | ? | ? | ? |
+| true | false | ? | ? | ? |
+| false | true | ? | ? | ? |
+| false | false | ? | ? | ? |
+
+---
+
+## Final Revision
+
+| Concept | Yaad rakhein |
+| --- | --- |
+| Logical Operator | Conditions ko jor kar true ya false deta hai |
+| `&&` (AND) | **Sab** true hon to true |
+| `\|\|` (OR) | **Koi ek** true ho to true |
+| `!` (NOT) | Value ko **ulta** kar deta hai |
+| AND sirf true kab? | Jab dono true hon |
+| OR sirf false kab? | Jab dono false hon |
+| Comparison ke sath NOT | Brackets `( )` zaroor lagayein |
+| Condition likhna | Dono taraf **poori condition** likhein |
+
+---
+
+## Teacher Solutions (Answer Key)
+
+### Section A: AND
+
+```javascript
+// Question 1
+var age = 17;
+var hasStudentCard = true;
+console.log(age > 15 && hasStudentCard);        // true
+
+// Question 2
+var internetOn = true;
+var battery = 15;
+console.log(internetOn && battery > 20);        // false
+
+// Question 3
+var orderAmount = 3500;
+var isMember = false;
+console.log(orderAmount >= 3000 && isMember);   // false
+
+// Question 4
+var age = 25;
+var hasCNIC = true;
+console.log(age >= 18 && hasCNIC);              // true
+```
+
+### Section B: OR
+
+```javascript
+// Question 5
+var isTeacher = false;
+var hasCoupon = true;
+console.log(isTeacher || hasCoupon);                      // true
+
+// Question 6
+var day = "Sunday";
+console.log(day === "Saturday" || day === "Sunday");      // true
+
+// Question 7
+var hasTicket = false;
+var hasInvitation = false;
+console.log(hasTicket || hasInvitation);                  // false
+
+// Question 8
+var mathMarks = 35;
+var englishMarks = 55;
+console.log(mathMarks >= 40 || englishMarks >= 40);       // true
+```
+
+### Section C: NOT
+
+```javascript
+// Question 9
+var isRaining = false;
+console.log(!isRaining);        // true
+
+// Question 10
+var isWifiConnected = true;
+console.log(!isWifiConnected);  // false
+
+// Question 11
+var age = 16;
+console.log(!(age >= 18));      // true
+```
+
+### Section D: Predict the Output
+
+- **Question 12:** `false`, `true`, `false`, `true`
+- **Question 13:** `false`, `true`, `false`
+
+### Section E: Truth Table Answer
+
+| A | B | A `&&` B | A `\|\|` B | `!A` |
+| --- | --- | --- | --- | --- |
+| true | true | **true** | **true** | **false** |
+| true | false | **false** | **true** | **false** |
+| false | true | **false** | **true** | **true** |
+| false | false | **false** | **false** | **true** |
+
 ### Khulasa (Summary)
 
 | Operator Type | Kaam | Result kya aata hai |
