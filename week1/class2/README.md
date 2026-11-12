@@ -1,6 +1,6 @@
 # JavaScript: Conditional Statements (if, else, else if)
 
-> **Note:** Is lecture mein har example aur har question mein sirf **ek single condition** use ho rahi hai. Multiple conditions (`&&`, `||`) agle lecture mein cover hongi.
+> **Note:** Step 1 se Step 5 tak har example aur har question mein sirf **ek single condition** use hui hai. Jab yeh pakka ho jaye, tab **Step 6** mein **multiple conditions** (`&&` aur `||`) sikhayi gayi hain.
 
 ---
 
@@ -13,6 +13,7 @@
 | 3 | `if ... else` | Do raaste |
 | 4 | `else if` | Kayi raaste |
 | 5 | `if / else if / else` | Sab ko mila kar use karna |
+| 6 | Multiple Conditions (`&&`, `\|\|`) | Ek se zyada conditions ek sath check karna |
 
 ---
 
@@ -807,6 +808,602 @@ if (marks >= 40) {
 
 ---
 
+## Step 6: Multiple Conditions (`&&` aur `||` ke sath)
+
+### Masla (Problem): Ek se zyada conditions
+
+Ab tak har `if` mein sirf **ek** condition thi. Lekin real life mein aksar faisla **do conditions** par hota hai:
+
+> Gaari chalane ki ijazat tab hai jab age 18 se zyada ho **aur** driving license ho.
+>
+> School band hoga agar aaj Sunday ho **ya** public holiday ho.
+
+Aise mein hum **Logical Operators** use karte hain, jo hum pehle seekh chuke hain.
+
+| Operator | Naam | Urdu mein | `if` kab chalega? |
+| --- | --- | --- | --- |
+| `&&` | AND | **Aur** | Jab **dono** conditions true hon |
+| `\|\|` | OR | **Ya** | Jab **koi ek** condition true ho |
+
+### Truth Table (Yaad rakhein)
+
+| Condition 1 | Condition 2 | `&&` (AND) | `\|\|` (OR) |
+| --- | --- | --- | --- |
+| true | true | **true** | **true** |
+| true | false | false | **true** |
+| false | true | false | **true** |
+| false | false | false | false |
+
+**Yaad rakhne ka asaan tareeqa:**
+
+- **AND (`&&`)** = "Sab chahiye". Ek bhi false hui to poora false.
+- **OR (`||`)** = "Ek kafi hai". Ek bhi true hui to poora true.
+
+### Syntax
+
+```javascript
+// AND: dono conditions true hon
+if (condition1 && condition2) {
+  // Yeh code tab chalega jab DONO true hon
+} else {
+  // Warna yeh chalega
+}
+
+// OR: koi ek condition true ho
+if (condition1 || condition2) {
+  // Yeh code tab chalega jab KOI EK true ho
+} else {
+  // Warna yeh chalega
+}
+```
+
+**Bohat zaroori:** Dono taraf **poori condition** likhni hoti hai.
+
+```javascript
+// Ghalat
+if (age >= 18 && <= 60) { }
+
+// Sahi
+if (age >= 18 && age <= 60) { }
+```
+
+---
+
+### Part A: `if` ke sath AND (`&&`)
+
+#### Real life example
+
+> Gaari chalane ke liye age 18 ya zyada ho **aur** driving license bhi ho. Dono zaroori hain.
+
+#### Pseudo Code
+
+```text
+START
+  age aur hasLicense ki values lo
+  IF age >= 18 AND hasLicense THEN
+      "You can drive" dikhao
+  ELSE
+      "You cannot drive" dikhao
+  END IF
+END
+```
+
+#### Diagram (age = 20, hasLicense = true)
+
+```
+   START
+     │
+     ▼
+┌─────────────┐
+│ age >= 18 ? │── false ──►  Result FALSE  ──►  else block: Print "You cannot drive"
+└─────────────┘
+   │
+  true
+   │
+   ▼
+┌──────────────┐
+│ hasLicense ? │── false ──►  Result FALSE  ──►  else block: Print "You cannot drive"
+└──────────────┘
+   │
+  true
+   │
+   ▼
+ Result TRUE  ──►  if block: Print "You can drive"
+```
+
+**Diagram kaise parhein:** AND mein har box ek condition hai. Agar **koi bhi box false** nikla (right side), to seedha **FALSE** aur `else` chalega. Agar **saare boxes true** hon (neeche jate jao), tab hi **TRUE** milta hai aur `if` chalega.
+
+#### Example 1: Driving
+
+```javascript
+var age = 20;
+var hasLicense = true;
+
+if (age >= 18 && hasLicense) {
+  console.log("You can drive");
+} else {
+  console.log("You cannot drive");
+}
+```
+
+**Output:**
+
+```text
+You can drive
+```
+
+**Step by step:**
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `age >= 18` yaani `20 >= 18` | true |
+| 2 | `hasLicense` | true |
+| 3 | `true && true` | **true**, is liye `if` chala |
+
+#### Example 2: Scholarship (jab ek condition false ho)
+
+```javascript
+var marks = 90;
+var income = 60000;
+
+if (marks >= 85 && income < 50000) {
+  console.log("Scholarship approved");
+} else {
+  console.log("Scholarship not approved");
+}
+```
+
+**Output:**
+
+```text
+Scholarship not approved
+```
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `marks >= 85` yaani `90 >= 85` | true |
+| 2 | `income < 50000` yaani `60000 < 50000` | **false** |
+| 3 | `true && false` | **false**, is liye `else` chala |
+
+**Wajah:** Marks sahi hain lekin income zyada hai. AND mein **dono** sahi hone chahiye.
+
+#### Example 3: Range Check (ek hi variable par do conditions)
+
+```javascript
+var age = 15;
+
+if (age >= 13 && age <= 19) {
+  console.log("Teenager");
+} else {
+  console.log("Not a teenager");
+}
+```
+
+**Output:** `Teenager`
+
+**Tip:** Jab koi value **do hadood (limits) ke beech** check karni ho (jaise 13 se 19), to AND use hota hai.
+
+---
+
+### Part B: `if` ke sath OR (`||`)
+
+#### Real life example
+
+> Aaj school band hoga agar Sunday ho **ya** public holiday ho. Dono mein se ek wajah kafi hai.
+
+#### Pseudo Code
+
+```text
+START
+  day aur isPublicHoliday ki values lo
+  IF day is "Sunday" OR isPublicHoliday THEN
+      "School is closed" dikhao
+  ELSE
+      "School is open" dikhao
+  END IF
+END
+```
+
+#### Diagram (day = "Monday", isPublicHoliday = true)
+
+```
+   START
+     │
+     ▼
+┌────────────────────┐
+│ day === "Sunday" ? │── true ──►  Result TRUE  ──►  if block: Print "School is closed"
+└────────────────────┘
+   │
+ false   ("Monday" === "Sunday" ghalat hai)
+   │
+   ▼
+┌───────────────────┐
+│ isPublicHoliday ? │── true ──►  Result TRUE  ──►  if block: Print "School is closed"
+└───────────────────┘
+   │
+ false
+   │
+   ▼
+ Result FALSE  ──►  else block: Print "School is open"
+```
+
+**Diagram kaise parhein:** OR mein jis box mein bhi condition **true** nikli, seedha right side par **TRUE** mil gaya aur aage dekhne ki zaroorat nahi. Sirf tab **FALSE** milta hai jab **saare boxes false** hon.
+
+#### Example 1: School Holiday
+
+```javascript
+var day = "Monday";
+var isPublicHoliday = true;
+
+if (day === "Sunday" || isPublicHoliday) {
+  console.log("School is closed");
+} else {
+  console.log("School is open");
+}
+```
+
+**Output:**
+
+```text
+School is closed
+```
+
+**Step by step:**
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `day === "Sunday"` yaani `"Monday" === "Sunday"` | false |
+| 2 | `isPublicHoliday` | **true** |
+| 3 | `false \|\| true` | **true**, is liye `if` chala |
+
+#### Example 2: Payment
+
+```javascript
+var hasCash = false;
+var hasCard = true;
+
+if (hasCash || hasCard) {
+  console.log("You can pay the bill");
+} else {
+  console.log("Payment not possible");
+}
+```
+
+**Output:** `You can pay the bill`
+
+#### Example 3: Discount (Student ya Senior Citizen)
+
+```javascript
+var isStudent = false;
+var age = 65;
+
+if (isStudent || age >= 60) {
+  console.log("Discount applied");
+} else {
+  console.log("No discount");
+}
+```
+
+**Output:** `Discount applied`
+
+**Wajah:** Student nahi hai (false), lekin age 60 se zyada hai (true). OR mein ek true kafi hai.
+
+---
+
+### Part C: AND aur OR mein farq (ek hi situation)
+
+Ek cinema mein entry ke liye `hasTicket` aur `hasInvitation` hain. Dekhein dono operators ka alag result:
+
+```javascript
+var hasTicket = true;
+var hasInvitation = false;
+
+// AND: dono chahiye
+if (hasTicket && hasInvitation) {
+  console.log("AND: Entry allowed");
+} else {
+  console.log("AND: Entry denied");
+}
+
+// OR: ek kafi hai
+if (hasTicket || hasInvitation) {
+  console.log("OR: Entry allowed");
+} else {
+  console.log("OR: Entry denied");
+}
+```
+
+**Output:**
+
+```text
+AND: Entry denied
+OR: Entry allowed
+```
+
+| | AND (`&&`) | OR (`\|\|`) |
+| --- | --- | --- |
+| Urdu mein | **Aur** | **Ya** |
+| `if` kab chalta hai? | Jab **sab** true hon | Jab **koi ek** true ho |
+| `else` kab chalta hai? | Jab **koi ek** false ho | Jab **sab** false hon |
+| Mizaj | Sakht (strict) | Naram (flexible) |
+| Real life | License: age **aur** license | Payment: cash **ya** card |
+
+---
+
+### Part D: `else if` ke sath Multiple Conditions
+
+`else if` mein bhi `&&` aur `||` bilkul usi tarah use hote hain. Har `else if` ki apni conditions hoti hain.
+
+#### Example 1: Scholarship Category (AND)
+
+**Rules:**
+
+| Category | Shart (dono sahi hon) |
+| --- | --- |
+| Full scholarship | Marks `85` ya zyada **aur** income `50000` se kam |
+| Half scholarship | Marks `70` ya zyada **aur** income `80000` se kam |
+| No scholarship | Upar ki koi bhi shart poori na ho |
+
+```javascript
+var marks = 75;
+var income = 60000;
+
+if (marks >= 85 && income < 50000) {
+  console.log("Full scholarship");
+} else if (marks >= 70 && income < 80000) {
+  console.log("Half scholarship");
+} else {
+  console.log("No scholarship");
+}
+```
+
+**Output:**
+
+```text
+Half scholarship
+```
+
+#### Diagram (marks = 75, income = 60000)
+
+```
+┌─────────────────────────────────┐
+│ marks >= 85 && income < 50000 ? │── true ──►  Full scholarship
+└─────────────────────────────────┘
+   │
+ false   (75 >= 85 ghalat hai, is liye AND false)
+   │
+   ▼
+┌─────────────────────────────────┐
+│ marks >= 70 && income < 80000 ? │── true ──►  Half scholarship   ◄── yahan true mila (75 >= 70 aur 60000 < 80000)
+└─────────────────────────────────┘
+   │
+ false
+   │
+   ▼
+ No scholarship
+```
+
+**Step by step:**
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `75 >= 85 && 60000 < 50000` yaani `false && false` | false |
+| 2 | `75 >= 70 && 60000 < 80000` yaani `true && true` | **true**, `Half scholarship` print, baqi skip |
+
+#### Example 2: Ticket Price (OR)
+
+**Rules:**
+
+| Ticket | Shart (koi ek sahi ho) |
+| --- | --- |
+| Free ticket | Age `5` se kam **ya** age `60` ya zyada |
+| Half ticket | Age `18` se kam **ya** student ho |
+| Full ticket | Upar ki koi bhi shart poori na ho |
+
+```javascript
+var age = 16;
+var isStudent = false;
+
+if (age < 5 || age >= 60) {
+  console.log("Free ticket");
+} else if (age < 18 || isStudent) {
+  console.log("Half ticket");
+} else {
+  console.log("Full ticket");
+}
+```
+
+**Output:**
+
+```text
+Half ticket
+```
+
+**Step by step:**
+
+| Step | Condition | Result |
+| --- | --- | --- |
+| 1 | `16 < 5 \|\| 16 >= 60` yaani `false \|\| false` | false |
+| 2 | `16 < 18 \|\| isStudent` yaani `true \|\| false` | **true**, `Half ticket` print |
+
+---
+
+### Common Mistakes (Multiple Conditions)
+
+| Ghalat | Sahi | Wajah |
+| --- | --- | --- |
+| `if (age >= 18 && <= 60)` | `if (age >= 18 && age <= 60)` | Dono taraf **poori condition** likhein |
+| `if (day = "Sunday" \|\| isHoliday)` | `if (day === "Sunday" \|\| isHoliday)` | `=` value assign karta hai, muqabla `===` se hota hai |
+| `if (a & b)` ya `if (a \| b)` | `if (a && b)` ya `if (a \|\| b)` | Logical operators mein **do symbols** hote hain |
+| `if (isTeacher && hasCoupon)` jab "koi ek" chahiye | `if (isTeacher \|\| hasCoupon)` | "Aur" ke liye `&&`, "ya" ke liye `\|\|` |
+
+**Abhi ke liye:** Ek hi `if` mein `&&` aur `||` ko **mix na karein**. Woh agle advanced lecture mein sikhaya jayega.
+
+---
+
+### Practice Questions: Multiple Conditions (Students ke liye)
+
+#### Section A: `if ... else` ke sath AND (`&&`)
+
+**Problem 1: Library Membership**
+
+- **Scenario:** Library mein membership tab milti hai jab student ki age 15 se zyada ho **aur** uske paas student card ho. Hira ki age 17 saal hai aur uske paas student card hai.
+- **Given:** `var age = 17;` aur `var hasStudentCard = true;`
+- **Task:** Agar dono conditions true hon to `Membership approved` print karein, warna `Membership denied` print karein.
+- **Expected Output:** `Membership approved`
+
+**Problem 2: Online Class**
+
+- **Scenario:** Online class join karne ke liye internet chal raha ho **aur** laptop ki battery 20% se zyada ho. Sana ka internet chal raha hai lekin battery sirf 15% hai.
+- **Given:** `var internetOn = true;` aur `var battery = 15;`
+- **Task:** Agar dono conditions true hon to `Join class` print karein, warna `Cannot join` print karein.
+- **Expected Output:** `Cannot join`
+
+**Problem 3: Free Delivery**
+
+- **Scenario:** Online store par free delivery tab milti hai jab order 3000 rupay ya us se zyada ka ho **aur** customer store ka member ho. Maryam ka order 3500 rupay ka hai lekin woh member nahi hai.
+- **Given:** `var orderAmount = 3500;` aur `var isMember = false;`
+- **Task:** Agar dono conditions true hon to `Free delivery` print karein, warna `Delivery charges apply` print karein.
+- **Expected Output:** `Delivery charges apply`
+
+**Problem 4: Teenager Check**
+
+- **Scenario:** Ek survey mein check karna hai ke koi larki teenager hai ya nahi. Teenager woh hai jis ki age 13 se 19 saal ke beech ho (13 aur 19 bhi shamil). Noor ki age 15 saal hai.
+- **Given:** `var age = 15;`
+- **Task:** Agar `age >= 13` **aur** `age <= 19` dono true hon to `Teenager` print karein, warna `Not a teenager` print karein.
+- **Expected Output:** `Teenager`
+
+#### Section B: `if ... else` ke sath OR (`||`)
+
+**Problem 5: Cafeteria Discount**
+
+- **Scenario:** Cafeteria mein discount unhein milta hai jo teacher hon **ya** jinke paas discount coupon ho. Zainab teacher nahi hai lekin uske paas coupon hai.
+- **Given:** `var isTeacher = false;` aur `var hasCoupon = true;`
+- **Task:** Agar koi ek bhi condition true ho to `Discount applied` print karein, warna `No discount` print karein.
+- **Expected Output:** `Discount applied`
+
+**Problem 6: Weekend Trip**
+
+- **Scenario:** Ayesha ki family trip tab hoti hai jab din Saturday ho **ya** Sunday ho. Aaj Sunday hai.
+- **Given:** `var day = "Sunday";`
+- **Task:** Agar `day === "Saturday"` **ya** `day === "Sunday"` true ho to `Family trip` print karein, warna `Normal day` print karein.
+- **Expected Output:** `Family trip`
+
+**Problem 7: Concert Entry**
+
+- **Scenario:** Concert mein entry ke liye ticket ho **ya** invitation card ho. Hania ke paas na ticket hai na invitation card.
+- **Given:** `var hasTicket = false;` aur `var hasInvitation = false;`
+- **Task:** Agar koi ek bhi true ho to `Entry allowed` print karein, warna `Entry denied` print karein.
+- **Expected Output:** `Entry denied`
+
+**Problem 8: Competition Eligibility**
+
+- **Scenario:** Ek competition mein shamil hone ke liye Maths mein 40 marks **ya** English mein 40 marks hone chahiye (koi ek kafi hai). Areeba ke Maths mein 35 aur English mein 55 marks hain.
+- **Given:** `var mathMarks = 35;` aur `var englishMarks = 55;`
+- **Task:** Agar `mathMarks >= 40` **ya** `englishMarks >= 40` true ho to `Eligible for competition` print karein, warna `Not eligible` print karein.
+- **Expected Output:** `Eligible for competition`
+
+#### Section C: `else if` ke sath Multiple Conditions
+
+**Problem 9: Scholarship Category**
+
+- **Scenario:** College scholarship marks aur family income dono dekh kar deta hai. Rida ke marks 72 hain aur family income 90000 rupay hai.
+- **Given:** `var marks = 72;` aur `var income = 90000;`
+- **Task:** Neeche diye gaye rules ke mutabiq message print karein (`&&` use karein).
+
+| Category | Shart (dono sahi hon) | Print karein |
+| --- | --- | --- |
+| Full | Marks `85` ya zyada **aur** income `50000` se kam | `Full scholarship` |
+| Half | Marks `70` ya zyada **aur** income `80000` se kam | `Half scholarship` |
+| Baqi sab | Upar ki koi shart poori na ho | `No scholarship` |
+
+- **Expected Output:** `No scholarship`
+
+**Problem 10: Ticket Price**
+
+- **Scenario:** Ek zoo mein ticket ki qeemat age aur student status par hoti hai. Sidra ki age 25 saal hai aur woh university student hai.
+- **Given:** `var age = 25;` aur `var isStudent = true;`
+- **Task:** Neeche diye gaye rules ke mutabiq message print karein (`||` use karein).
+
+| Ticket | Shart (koi ek sahi ho) | Print karein |
+| --- | --- | --- |
+| Free | Age `5` se kam **ya** age `60` ya zyada | `Free ticket` |
+| Half | Age `18` se kam **ya** student ho | `Half ticket` |
+| Baqi sab | Upar ki koi shart poori na ho | `Full ticket` |
+
+- **Expected Output:** `Half ticket`
+
+**Problem 11: Grade with Attendance**
+
+- **Scenario:** Ek school mein grade marks aur attendance dono dekh kar milta hai. Sara ke marks 85 hain aur attendance 80% hai.
+- **Given:** `var marks = 85;` aur `var attendance = 80;`
+- **Task:** Neeche diye gaye rules ke mutabiq grade print karein (`&&` use karein).
+
+| Grade | Shart (dono sahi hon) | Print karein |
+| --- | --- | --- |
+| A | Marks `80` ya zyada **aur** attendance `90` ya zyada | `Grade A` |
+| B | Marks `60` ya zyada **aur** attendance `75` ya zyada | `Grade B` |
+| Baqi sab | Upar ki koi shart poori na ho | `Grade C` |
+
+- **Expected Output:** `Grade B`
+
+#### Section D: Predict the Output (Bina run kiye batayein)
+
+**Problem 12:**
+
+```javascript
+var age = 20;
+var hasID = false;
+
+if (age >= 18 && hasID) {
+  console.log("Entry allowed");
+} else {
+  console.log("Entry denied");
+}
+```
+
+- **Task:** Output kya hoga aur kyun?
+- **Expected Output:** `Entry denied` (kyun ke `age >= 18` true hai lekin `hasID` false hai, aur AND mein dono true chahiye).
+
+**Problem 13:**
+
+```javascript
+var day = "Friday";
+var isHoliday = true;
+
+if (day === "Sunday" || isHoliday) {
+  console.log("Holiday");
+} else {
+  console.log("Working day");
+}
+```
+
+- **Task:** Output kya hoga aur kyun?
+- **Expected Output:** `Holiday` (kyun ke din Sunday nahi hai lekin `isHoliday` true hai, aur OR mein ek true kafi hai).
+
+#### Section E: Debugging Challenge (Ghalti dhundein)
+
+**Problem 14: Cafeteria Discount**
+
+- **Scenario:** Cafeteria ka rule hai ke teacher **ya** coupon wale ko discount milega. Zainab teacher nahi hai lekin uske paas coupon hai, phir bhi program `No discount` dikha raha hai.
+
+```javascript
+var isTeacher = false;
+var hasCoupon = true;
+
+if (isTeacher && hasCoupon) {
+  console.log("Discount applied");
+} else {
+  console.log("No discount");
+}
+```
+
+- **Task:** Ghalti dhundein, usay theek karein, aur batayein ke ghalti kyun thi.
+- **Hint:** "Ya" ke liye kaun sa operator use hota hai?
+- **Expected Output (theek code ke baad):** `Discount applied`
+
+---
+
 ## Final Revision
 
 | Concept | Yaad rakhein |
@@ -818,6 +1415,10 @@ if (marks >= 40) {
 | Order | Conditions upar se neeche check hoti hain |
 | Execution | Sirf **ek** block chalta hai |
 | Comparison | `===` use karein, `=` nahi |
+| `&&` (AND) | "Aur": `if` tab chalta hai jab **dono** conditions true hon |
+| `\|\|` (OR) | "Ya": `if` tab chalta hai jab **koi ek** condition true ho |
+| Multiple conditions | Dono taraf **poori condition** likhein (`age >= 18 && age <= 60`) |
+| `&&` aur `\|\|` | Abhi ek hi `if` mein mix na karein |
 
 ---
 
@@ -1010,3 +1611,143 @@ if (marks >= 80) {
 ```
 
 **Wajah:** Pehle code mein sab se choti condition (`>= 40`) sab se upar thi, is liye `90` bhi wahin true ho gaya. Theek code mein **sab se bari condition pehle** rakhi gayi hai.
+
+### Step 6 Solutions: Multiple Conditions
+
+#### Section A: AND (`&&`)
+
+```javascript
+// Problem 1
+var age = 17;
+var hasStudentCard = true;
+if (age > 15 && hasStudentCard) {
+  console.log("Membership approved");
+} else {
+  console.log("Membership denied");
+}
+
+// Problem 2
+var internetOn = true;
+var battery = 15;
+if (internetOn && battery > 20) {
+  console.log("Join class");
+} else {
+  console.log("Cannot join");
+}
+
+// Problem 3
+var orderAmount = 3500;
+var isMember = false;
+if (orderAmount >= 3000 && isMember) {
+  console.log("Free delivery");
+} else {
+  console.log("Delivery charges apply");
+}
+
+// Problem 4
+var age = 15;
+if (age >= 13 && age <= 19) {
+  console.log("Teenager");
+} else {
+  console.log("Not a teenager");
+}
+```
+
+#### Section B: OR (`||`)
+
+```javascript
+// Problem 5
+var isTeacher = false;
+var hasCoupon = true;
+if (isTeacher || hasCoupon) {
+  console.log("Discount applied");
+} else {
+  console.log("No discount");
+}
+
+// Problem 6
+var day = "Sunday";
+if (day === "Saturday" || day === "Sunday") {
+  console.log("Family trip");
+} else {
+  console.log("Normal day");
+}
+
+// Problem 7
+var hasTicket = false;
+var hasInvitation = false;
+if (hasTicket || hasInvitation) {
+  console.log("Entry allowed");
+} else {
+  console.log("Entry denied");
+}
+
+// Problem 8
+var mathMarks = 35;
+var englishMarks = 55;
+if (mathMarks >= 40 || englishMarks >= 40) {
+  console.log("Eligible for competition");
+} else {
+  console.log("Not eligible");
+}
+```
+
+#### Section C: `else if` ke sath Multiple Conditions
+
+```javascript
+// Problem 9
+var marks = 72;
+var income = 90000;
+if (marks >= 85 && income < 50000) {
+  console.log("Full scholarship");
+} else if (marks >= 70 && income < 80000) {
+  console.log("Half scholarship");
+} else {
+  console.log("No scholarship");
+}
+// Wajah: 72 >= 70 true hai, lekin 90000 < 80000 false hai, is liye AND false.
+
+// Problem 10
+var age = 25;
+var isStudent = true;
+if (age < 5 || age >= 60) {
+  console.log("Free ticket");
+} else if (age < 18 || isStudent) {
+  console.log("Half ticket");
+} else {
+  console.log("Full ticket");
+}
+// Wajah: pehli condition false, doosri mein isStudent true hai, is liye OR true.
+
+// Problem 11
+var marks = 85;
+var attendance = 80;
+if (marks >= 80 && attendance >= 90) {
+  console.log("Grade A");
+} else if (marks >= 60 && attendance >= 75) {
+  console.log("Grade B");
+} else {
+  console.log("Grade C");
+}
+// Wajah: pehli mein attendance 80 >= 90 false hai, doosri mein dono true hain.
+```
+
+#### Section D: Predict the Output
+
+- **Problem 12:** `Entry denied`
+- **Problem 13:** `Holiday`
+
+#### Section E: Debugging Challenge (Theek code)
+
+```javascript
+var isTeacher = false;
+var hasCoupon = true;
+
+if (isTeacher || hasCoupon) {
+  console.log("Discount applied");
+} else {
+  console.log("No discount");
+}
+```
+
+**Wajah:** "Teacher **ya** coupon" ka matlab hai ke koi ek kafi hai, is liye **OR (`||`)** use hona chahiye. `&&` mein dono true hone zaroori hain, aur Zainab ke case mein `isTeacher` false hai, is liye woh `else` mein chala gaya.
